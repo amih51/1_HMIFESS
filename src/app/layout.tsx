@@ -1,18 +1,29 @@
-import '@/styles/globals.css'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Nav from "../components/nav";
+import Providers from "./providers";
 
-export const metadata = {
-  title: 'Breadit',
-  description: 'A Reddit clone built with Next.js and TypeScript.',
-}
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "HMIFess",
+  description: "Dibuat untuk pemenuhan tugas SPARTA",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang='en'>
-      <body>{children}</body>
+    <html lang="en">
+      <body className={inter.className}>
+        <Providers>
+          <Nav />
+          {children}
+        </Providers>
+      </body>
     </html>
-  )
+  );
 }
