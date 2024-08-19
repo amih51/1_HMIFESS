@@ -1,13 +1,9 @@
-import Image from 'next/image'
-import styles from './page.module.css'
 import Login from './Login'
-
-// localhost:3000
 
 export default function Home() {
   return (
-    <div style={{width: "500px", margin: "0 auto", paddingTop: "30px"}}>
-      <h3>Login Website</h3>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-4">Welcome to Our Website</h1>
       <Login />
     </div>
   )
