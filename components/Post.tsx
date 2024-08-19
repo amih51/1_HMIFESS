@@ -71,3 +71,4 @@ export default function Post({ title, body, author, isAnon, voteCount, comments,
     </div>
   );
 }
+
