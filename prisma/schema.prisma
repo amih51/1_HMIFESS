@@ -1,0 +1,108 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                 String    @id @default(cuid())
+  userId             String
+  type               String
+  provider           String    
+  providerAccountId  String    
+  refresh_token      String?   @db.Text
+  access_token       String?   @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?   @db.Text
+  session_state      String?
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id                 String    @id @default(cuid())
+  sessionToken       String    @unique
+  userId             String
+  expires            DateTime
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id                 String    @id @default(cuid())
+  name               String?
+  email              String?   @unique
+  emailVerified      DateTime? @map("email_verified")
+  image              String?
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  posts              Post[]
+  comments           Comment[]
+  votes              Vote[]
+  createdCategories  Category[] @relation("CategoryCreator")
+  joinedCategories   Category[] @relation("CategoryMembers")
+  Account            Account[]
+  Session            Session[]
+
+  @@map(name: "users")
+}
+
+model Post {
+  id                 String    @id @default(cuid())
+  title              String
+  body               String
+  categoryId         String
+  category           Category  @relation(fields: [categoryId], references: [id])
+  userId             String
+  user               User      @relation(fields: [userId], references: [id])
+  comments           Comment[]
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  isAnon             Boolean
+  votes              Vote[]
+  voteCount          Int       @default(0)
+}
+
+model Category {
+  id                 String    @id @default(cuid())
+  name               String    @unique
+  displayName        String
+  infoBoxText        String
+  createdAt          DateTime  @default(now())
+  createdById        String
+  createdBy          User      @relation("CategoryCreator", fields: [createdById], references: [id])
+  posts              Post[]
+  joinedUsers        User[]    @relation("CategoryMembers")
+}
+
+
+model Vote {
+  id                 String    @id @default(cuid())
+  voteType           Boolean
+  userId             String
+  postId             String?
+  commentId          String?
+  user               User      @relation(fields: [userId], references: [id])
+  post               Post?     @relation(fields: [postId], references: [id])
+  comment            Comment?  @relation(fields: [commentId], references: [id])
+}
+
+model Comment {
+  id                 String    @id @default(cuid())
+  body               String
+  userId             String
+  postId             String
+  user               User      @relation(fields: [userId], references: [id])
+  post               Post      @relation(fields: [postId], references: [id])
+  votes              Vote[]
+  voteCount          Int       @default(0)
+  isAnon             Boolean
+}
