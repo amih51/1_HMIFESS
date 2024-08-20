@@ -106,3 +106,4 @@ model Comment {
   voteCount          Int       @default(0)
   isAnon             Boolean
 }
+

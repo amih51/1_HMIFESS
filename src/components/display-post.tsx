@@ -1,11 +1,13 @@
+// components/display-post.tsx
 import React from "react";
 import VoteBtn from "./vote-btn";
+import Comments from "./comments";
 
 interface Post {
   id: string;
   isAnon: boolean;
   user: {
-    id: any;
+    id: string;
     image: string;
     name: string;
   };
@@ -39,7 +41,8 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
           vote_count: {post.voteCount} <br />
           created_at: {new Date(post.createdAt).toLocaleString()} <br />
           updated_at: {new Date(post.updatedAt).toLocaleString()} <br />
-          <VoteBtn postId={`${post.id}`} userId={`${post.user.id}`} /> <br />
+          <VoteBtn postId={post.id} userId={post.user.id} /> <br />
+          <Comments postId={post.id} />
           <br />
         </li>
       ))}
