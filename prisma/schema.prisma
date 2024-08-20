@@ -102,6 +102,7 @@ model Comment {
   postId             String
   user               User      @relation(fields: [userId], references: [id])
   post               Post      @relation(fields: [postId], references: [id])
+  createdAt          DateTime  @default(now())
   votes              Vote[]
   voteCount          Int       @default(0)
   isAnon             Boolean

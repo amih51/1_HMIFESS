@@ -6,16 +6,15 @@ import { useSession } from 'next-auth/react';
 
 interface CreateCommentProps {
   postId: string;
-  onCommentCreated: () => void;
 }
 
-const CreateComment: React.FC<CreateCommentProps> = ({ postId, onCommentCreated }) => {
+const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
   const [body, setBody] = useState('');
   const [isAnon, setIsAnon] = useState(false);
   const { data: session } = useSession();
+  const email = session?.user?.email;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
     if (!session) return;
 
     try {
@@ -26,8 +25,8 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId, onCommentCreated 
         },
         body: JSON.stringify({
           body,
+          email,
           postId,
-          userId: session.user.id,
           isAnon,
         }),
       });
@@ -35,7 +34,6 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId, onCommentCreated 
       if (response.ok) {
         setBody('');
         setIsAnon(false);
-        onCommentCreated();
       } else {
         console.error('Failed to create comment');
       }

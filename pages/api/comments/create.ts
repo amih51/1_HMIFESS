@@ -10,13 +10,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { body, postId, userId, isAnon } = req.body;
+    const { body, email, postId, isAnon } = req.body;
+
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    
+    }
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
 
     const comment = await prisma.comment.create({
       data: {
         body,
-        postId,
-        userId,
+        post: { connect: { id: post.id } },
+        user: { connect: { id: user.id } },
         isAnon,
       },
     });

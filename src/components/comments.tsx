@@ -48,7 +48,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
         </div>
       ))}
       {session && (
-        <CreateComment postId={postId} onCommentCreated={fetchComments} />
+        <CreateComment postId={postId} />
       )}
     </div>
   );

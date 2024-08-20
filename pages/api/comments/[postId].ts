@@ -21,9 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         include: {
           user: true,
         },
-        orderBy: {
-          createdAt: 'desc',
-        },
       });
 
       res.status(200).json(comments);
