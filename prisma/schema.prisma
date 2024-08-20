@@ -60,14 +60,14 @@ model Post {
   title              String
   body               String
   categoryId         String
-  userId             String
   category           Category  @relation(fields: [categoryId], references: [id])
+  userId             String
   user               User      @relation(fields: [userId], references: [id])
   comments           Comment[]
-  votes              Vote[]
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   isAnon             Boolean
+  votes              Vote[]
   voteCount          Int       @default(0)
 }
 
@@ -86,7 +86,7 @@ model Category {
 
 model Vote {
   id                 String    @id @default(cuid())
-  voteType           VoteType
+  voteType           Boolean
   userId             String
   postId             String?
   commentId          String?
@@ -103,12 +103,7 @@ model Comment {
   user               User      @relation(fields: [userId], references: [id])
   post               Post      @relation(fields: [postId], references: [id])
   votes              Vote[]
-  isAnon             Boolean
   voteCount          Int       @default(0)
+  isAnon             Boolean
 }
 
-enum VoteType {
-  UPVOTE
-  DOWNVOTE
-  NOVOTE
-}

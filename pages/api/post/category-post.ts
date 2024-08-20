@@ -18,9 +18,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
             },
             include: {
-                user: true,
-                category: true,
-              },
+                user: true, 
+                category: true, 
+            },
         });
 
         res.status(200).json(categoryPost);

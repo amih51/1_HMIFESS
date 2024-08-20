@@ -44,14 +44,14 @@ export default function Nav() {
     return (
         <SessionProvider>
             <nav className="flex items-end justify-between bg-colorLogo">
-                    <Link href="/" className="flex items-center justify-between text-2xl font-bold">
-                        <img 
-                            src="/hmif-logo.svg" 
-                            alt="Logo HMIF" 
-                            className="w-8 h-auto"
-                        />
-                        HMIFess
-                    </Link>
+                <Link href="/" className="flex items-center justify-between text-2xl font-bold">
+                    <img 
+                        src="/hmif-logo.svg" 
+                        alt="Logo HMIF" 
+                        className="w-8 h-auto"
+                    />
+                    HMIFess
+                </Link>
                 <div className="flex items-center justify-between h-8">
                     <select
                         name="Category"

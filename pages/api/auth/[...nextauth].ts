@@ -23,6 +23,13 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
   ],
+  callbacks: {
+    async redirect({ url, baseUrl }: { url: string, baseUrl: string }) {
+      return url.startsWith(baseUrl)
+        ? url
+        : baseUrl;
+    }
+  }
 }
 
 export default NextAuth(authOptions);
