@@ -1,5 +1,6 @@
-// components/display-post.tsx
+// src/components/display-post.tsx
 import React from "react";
+import Link from "next/link";
 import VoteBtn from "./vote-btn";
 import Comments from "./comments";
 
@@ -33,7 +34,10 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
           {!post.isAnon && (
             <>
               <img src={post.user.image} alt="profile photo" />
-              user: {post.user.name} <br />
+              <Link href={`/profile/${post.user.id}`} className="text-blue-500 hover:underline">
+                user: {post.user.name}
+              </Link>
+              <br />
             </>
           )}
           category: {post.category.name} <br />
