@@ -1,9 +1,9 @@
-// components/Comments.tsx
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import CreateComment from './create-comment';
+import { fetcher } from '@/lib/fetcher'; // Pastikan fetcher.ts sudah ada
 
 interface Comment {
   id: string;
@@ -19,29 +19,16 @@ interface CommentsProps {
 }
 
 const Comments: React.FC<CommentsProps> = ({ postId }) => {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const { data: comments, error } = useSWR(`/api/comments/${postId}`, fetcher);
   const { data: session } = useSession();
 
-  const fetchComments = async () => {
-    try {
-      const res = await fetch(`/api/comments/${postId}`);
-      if (res.ok) {
-        const data = await res.json();
-        setComments(data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch comments:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchComments();
-  }, [postId]);
+  if (error) return <div>Failed to load comments.</div>;
+  if (!comments) return <div>Loading...</div>;
 
   return (
     <div>
       <h3>Comments</h3>
-      {comments.map((comment) => (
+      {comments.map((comment: Comment) => (
         <div key={comment.id}>
           <p>{comment.body}</p>
           <small>{comment.isAnon ? 'Anonymous' : comment.user.name}</small>

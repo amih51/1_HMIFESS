@@ -1,3 +1,4 @@
+// pages/api/category/create.ts
 import prisma from '@/lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 

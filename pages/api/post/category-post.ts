@@ -1,3 +1,4 @@
+// pages/api/post/category-post.ts
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
