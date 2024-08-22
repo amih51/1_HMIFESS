@@ -3,6 +3,7 @@ import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
 import LoginPage from "@/app/auth/signin/page";
 import CreatePost from "@/components/create-post";
 import CategoryPosts from "@/components/category-home";
+import LoaderBar from "@/components/loader-bar"; // Import LoaderBar
 
 export default async function Page({ params }: { params: { category: string } }) {
     const session = await getServerSession(authOptions);
@@ -18,6 +19,10 @@ export default async function Page({ params }: { params: { category: string } })
 
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/post/category-post?category=${params.category}`);
     const posts = await res.json();
+
+    if (!posts) {
+        return <LoaderBar />; // Tampilkan loader bar saat data belum ada
+    }
 
     return (
         <main className="bg-backgroundLogo">

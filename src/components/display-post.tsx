@@ -1,7 +1,8 @@
-// components/display-post.tsx
 import React from "react";
+import Link from "next/link";
 import VoteBtn from "./vote-btn";
 import Comments from "./comments";
+import LoaderBar from "./loader-bar"; // Import LoaderBar
 
 interface Post {
   id: string;
@@ -25,6 +26,10 @@ interface DisplayPostProps {
 }
 
 const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
+  if (!posts || posts.length === 0) {
+    return <LoaderBar />; // Tampilkan loader saat posts masih kosong atau belum ada
+  }
+
   return (
     <ul>
       {posts.map((post) => (
@@ -33,7 +38,10 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
           {!post.isAnon && (
             <>
               <img src={post.user.image} alt="profile photo" />
-              user: {post.user.name} <br />
+              <Link href={`/profile/${post.user.id}`} className="text-blue-500 hover:underline">
+                user: {post.user.name}
+              </Link>
+              <br />
             </>
           )}
           category: {post.category.name} <br />

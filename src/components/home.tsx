@@ -1,27 +1,18 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react";
+import useSWR from 'swr';
 import DisplayPost from "./display-post";
+import { fetcher } from '@/lib/fetcher';
+import LoaderBar from './loader-bar'; 
 
 const AllPosts = () => {
-  const [posts, setPosts] = useState<any[]>([]);
+  const { data: posts, error } = useSWR('/api/post/all-post', fetcher);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch(`/api/post/all-post`);
-        const data = await res.json();
-        setPosts(data.reverse());
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  if (error) return <div>Failed to load posts.</div>;
+  if (!posts) return <LoaderBar />; // Tampilkan loader bar saat loading
 
   return (
-    <DisplayPost posts={posts} />
+    <DisplayPost posts={posts.reverse()} />
   );
 };
 

@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetcher';
+import { useState } from 'react';
 
 type VoteType = boolean; // true for upvote, false for downvote
 type VoteStatus = "none" | "upvoted" | "downvoted";
@@ -11,31 +13,14 @@ interface VoteBtnProps {
 }
 
 const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
-    const [voteStatus, setVoteStatus] = useState<VoteStatus>("none");
-    const [voteCount, setVoteCount] = useState<number>(0);
+    const { data: voteData, error: voteError } = useSWR(`/api/vote/vote-status?postId=${postId}&userId=${userId}`, fetcher);
+    const { data: postData, error: postError } = useSWR(`/api/post/${postId}`, fetcher);
 
-    useEffect(() => {
-        const fetchInitialData = async () => {
-            try {
-                // Fetch vote status and vote count in parallel
-                const [statusRes, countRes] = await Promise.all([
-                    fetch(`/api/vote/vote-status?postId=${postId}&userId=${userId}`),
-                    fetch(`/api/post/${postId}`)
-                ]);
+    const [voteStatus, setVoteStatus] = useState<VoteStatus>(voteData?.voteType ? "upvoted" : voteData?.voteType === false ? "downvoted" : "none");
+    const [voteCount, setVoteCount] = useState<number>(postData?.voteCount || 0);
 
-                const { voteType } = await statusRes.json();
-                const { voteCount } = await countRes.json();
-
-                // Update state
-                setVoteStatus(voteType === true ? "upvoted" : voteType === false ? "downvoted" : "none");
-                setVoteCount(voteCount);
-            } catch (error) {
-                console.error("Failed to fetch initial data:", error);
-            }
-        };
-
-        fetchInitialData();
-    }, [postId, userId]);
+    if (voteError || postError) return <div>Failed to load vote data.</div>;
+    if (!voteData || !postData) return <div>Loading...</div>;
 
     const handleVote = async (type: VoteType) => {
         try {
@@ -54,7 +39,7 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
             if (res.ok) {
                 // Toggle the vote status
                 setVoteStatus(voteStatus === (type ? "upvoted" : "downvoted") ? "none" : (type ? "upvoted" : "downvoted"));
-                
+
                 // Update vote count
                 const updatedCountRes = await fetch(`/api/post/${postId}`);
                 const { voteCount } = await updatedCountRes.json();
