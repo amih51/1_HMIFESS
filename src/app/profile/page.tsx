@@ -1,7 +1,7 @@
 // src\app\profile\page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from "react";
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
 import { useSession } from 'next-auth/react';
@@ -30,7 +30,7 @@ const Profile = () => {
           const res = await fetch('/api/user/update-name', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: newName }),
+            body: JSON.stringify({ name: newName , email: session?.user?.email }),
           });
       
           if (res.ok) {
@@ -83,7 +83,7 @@ const Profile = () => {
             <div className="mb-6">
                 <h2 className="text-2xl font-semibold mb-2">Your Posts</h2>
                 <ul className="space-y-2">
-                    {posts.filter((post) => post.user.email === session?.user?.email).map((post) => (
+                    {posts.filter((post: { user: { email: string | null | undefined; }; }) => post.user.email === session?.user?.email).map((post: { id: Key | null | undefined; category: { name: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; }; title: any; body: any; }) => (
                         <li key={post.id} className="border p-4 rounded-md shadow-md">
                             <div className="mb-2 font-semibold">{post.category.name}</div>
                             <div>{post.title || post.body}</div>
