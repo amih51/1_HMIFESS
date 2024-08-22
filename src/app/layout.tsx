@@ -24,7 +24,6 @@ export default function RootLayout({
       </head>
       <body className='min-h-screen bg-backgroundLogo'>
         <Providers>
-          <Nav />
           {children}
         </Providers>
       </body>
