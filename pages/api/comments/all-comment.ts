@@ -1,4 +1,3 @@
-// pages/api/comments.ts
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
