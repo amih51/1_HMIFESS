@@ -1,9 +1,11 @@
+// src\app\profile\[id]\page.tsx
 "use client";
 
 import { useRouter } from 'next/navigation'; // Gunakan useRouter dari next/navigation
 import useSWR from 'swr';
 import { fetcher } from '../../../lib/fetcher'; // Menggunakan fetcher yang sudah didefinisikan
 import { useEffect, useState } from 'react';
+import LoaderBar from '../../../components/loader-bar';
 
 type Post = {
   id: string;
@@ -38,7 +40,7 @@ export default function ProfilePage() {
 
   const { data: user, error } = useSWR<User>(userId ? `/api/user/${userId}` : null, fetcher);
 
-  if (!user && !error) return <div>Loading...</div>;
+  if (!user && !error) return <LoaderBar />; 
   if (error) {
     console.error('Error fetching user data:', error);
     return <div>Error: {error.message}</div>;

@@ -1,7 +1,14 @@
-// lib/fetcher.ts
-export const fetcher = (url: string) => fetch(url).then(res => {
+export const fetcher = async (url: string) => {
+    const res = await fetch(url);
     if (!res.ok) {
-        throw new Error('An error occurred while fetching the data.');
+      const errorData = await res.text();
+      try {
+        const parsedErrorData = JSON.parse(errorData);
+        throw new Error(`HTTP error ${res.status}: ${parsedErrorData.message}`);
+      } catch (e) {
+        throw new Error(`HTTP error ${res.status}: ${errorData}`);
+      }
     }
-    return res.json();
-});
+    const data = await res.json();
+    return data;
+  };
