@@ -31,9 +31,9 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
   }
 
   return (
-    <ul>
+    <ul className=''>
       {posts.map((post) => (
-        <li key={post.id}>
+        <li key={post.id} className='border bg-white m-5 p-2 rounded'>
           is_anon: {post.isAnon ? "True" : "False"} <br />
           {!post.isAnon && (
             <>

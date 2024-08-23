@@ -33,11 +33,11 @@ export default function CreatePost({ category }: CreatePostProps) {
   };
 
   return (
-    <div className='border'> 
+    <div className='bg-white p-2 m-5 rounded'> 
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="body">Post:</label>
-          <input
+          <input className='border bg-gray-100 p-2 rounded'
             type="text"
             value={body}
             onChange={(e) => setBody(e.target.value)}
@@ -52,7 +52,7 @@ export default function CreatePost({ category }: CreatePostProps) {
             onChange={(e) => setIsAnon(e.target.checked)}
           />
         </div>
-        <button type="submit">Create Post</button>
+        <button type="submit" className='bg-green-400 p-1 rounded'>Create Post</button>
       </form>
     </div>
   );

@@ -27,10 +27,10 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
   if (!comments) return <LoaderBar />;
 
   return (
-    <div>
+    <div className='bg-gray-200 m-5 p-2 rounded'>
       <h3>Comments</h3>
       {comments.map((comment: Comment) => (
-        <div key={comment.id}>
+        <div key={comment.id} className='bg-gray-100 m-5 rounded'>
           <p>{comment.body}</p>
           <small>{comment.isAnon ? 'Anonymous' : comment.user.name}</small>
         </div>

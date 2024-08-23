@@ -62,7 +62,7 @@ export default function Nav() {
 
   return (
     <SessionProvider>
-      <nav className="flex items-center justify-between bg-colorLogo p-4">
+      <nav className="flex items-center justify-between bg-green-900 p-4">
         <Link href="/" className="flex items-center text-2xl font-bold">
           <img
             src="/hmif-logo.svg"

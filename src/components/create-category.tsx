@@ -27,19 +27,19 @@ export default function CreateCategory() {
   };
 
   return (
-    <div className='border'>
+    <div className='bg-white m-5 rounded'>
       <form onSubmit={handleSubmit}>
-        <div >
+        <div>
           <label>Category Name</label>
-          <input
+          <input className='bg-gray-300 m-1 rounded'
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
-        <div className='border'>
-          <button type="submit">Create Category</button>
+        <div>
+          <button type="submit" className='bg-green-400 rounded m-4'>Create Category</button>
         </div>
       </form>
     </div>

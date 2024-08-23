@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { category: string } })
     }
 
     return (
-        <main className="bg-backgroundLogo">
+        <main className="bg-colorLogo">
             <div className="items-center font-mono">
                 <h1 className="text-5xl">Category: {params.category}</h1>
                 <CreatePost category={params.category} />

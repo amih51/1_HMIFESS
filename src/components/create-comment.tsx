@@ -45,7 +45,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <textarea
+      <textarea className='bg-white m-5 rounded'
         value={body}
         onChange={(e) => setBody(e.target.value)}
         placeholder="Write a comment..."
@@ -58,10 +58,10 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
             checked={isAnon}
             onChange={(e) => setIsAnon(e.target.checked)}
           />
-          Post anonymously
+           Post anonymously
         </label>
       </div>
-      <button type="submit">Post Comment</button>
+      <button type="submit" className='bg-green-400 m-5 p-1 rounded'>Post Comment</button>
     </form>
   );
 };

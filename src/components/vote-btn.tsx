@@ -51,21 +51,21 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
 
     return (
         <>
-            <div>
-                <button
+            <div >
+                <button className='bg-blue-400 p-1 m-5 rounded'
                     onClick={() => handleVote(true)} 
                     style={{ color: voteStatus === "upvoted" ? "red" : "black" }}
                 >
                     Upvote
                 </button>
-                <button
+                <button className='bg-red-400 m-5 p-1 rounded'
                     onClick={() => handleVote(false)} 
                     style={{ color: voteStatus === "downvoted" ? "red" : "black" }}
                 >
                     Downvote
                 </button>
             </div>
-            <div>
+            <div className='bg-green-400 m-5 p-1 rounded'>
                 Vote Count: {voteCount}
             </div>
         </>
