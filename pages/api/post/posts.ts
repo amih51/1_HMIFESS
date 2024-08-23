@@ -10,6 +10,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 user: true, 
                 category: true, 
             },
+            orderBy: {
+                createdAt: 'desc', 
+            },
         });
 
         res.status(200).json(allPosts);
