@@ -78,7 +78,7 @@ const Profile = () => {
     if (userError) return <div>Failed to load user profile.</div>;
     if (postsError) return <div>Failed to load posts.</div>;
     if (categoriesError) return <div>Failed to load categories.</div>;
-    if (!user || !posts || !categories) return <Loader />;
+    if (!user || !posts || !categories) return <div>Loading...</div>;
 
     const filteredPosts = posts
       .filter((post: any) => post.user.id === user.id)
