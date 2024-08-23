@@ -9,7 +9,7 @@ import LoaderBar from "@/components/loader-bar";
 import TabButton from "@/components/tab-button";
 import {ArrowLeftIcon} from "@heroicons/react/24/solid";
 
-const postFetcher = async (url: string, email: string) => {
+const postFetcher = async (url, email) => {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -42,7 +42,7 @@ const Profile = () => {
 
     const [tab, setTab] = useState('postingan');
     const [isPending, startTransition] = useTransition();
-    const handleTabChange = (id: string) => {
+    const handleTabChange = (id) => {
       startTransition(() => {
         setTab(id)
       });
@@ -91,11 +91,11 @@ const Profile = () => {
     if (!user || !posts || !categories) return <LoaderBar />;
 
     const filteredPosts = posts
-      .filter((post: any) => post.user.id === user.id)
+      .filter((post) => post.user.id === user.id)
 
-    const profile_tab = [
-      {
-        id: "postingan",
+    const profile_tab =
+      [
+        {id: "postingan",
         content: <DisplayPost posts={filteredPosts}/>,
       },
       {
