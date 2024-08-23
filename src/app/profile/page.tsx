@@ -5,6 +5,7 @@ import { useState, useEffect, AwaitedReactNode, JSXElementConstructor, Key, Reac
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
 import { useSession } from 'next-auth/react';
+import Loader from '@/components/loader-bar';
 
 const Profile = () => {
     const { data: session } = useSession();
@@ -17,6 +18,10 @@ const Profile = () => {
 
     const [newName, setNewName] = useState('');
 
+    useEffect(() => {
+        console.log('Session:', session);
+    }, [session]);
+    
     useEffect(() => {
         if (user) {
             setNewName(user.name || '');
@@ -48,7 +53,7 @@ const Profile = () => {
 
     if (postsError) return <div>Failed to load posts.</div>;
     if (categoriesError) return <div>Failed to load categories.</div>;
-    if (!user || !posts || !categories) return <div>Loading...</div>;
+    if (!user || !posts || !categories) return <Loader />;
 
     return (
         <div className="container mx-auto p-6">
