@@ -111,7 +111,7 @@ const Profile = () => {
     return (
         <main>
     {/*Profile Home Page*/}
-        <div className="container border-2 mx-auto p-6">
+        <div className="container mx-auto p-6">
           {/*Upper Part*/}
             <div className='flex flex-row place-items-center'>
               <div className='ml-5'>
