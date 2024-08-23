@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect, Key } from "react";
+import { useState, useEffect, useTransition, Key } from "react";
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { fetcher } from "@/lib/fetcher";
 import DisplayPost from "@/components/display-post";
 import LoaderBar from "@/components/loader-bar";
+import TabButton from "@/components/tab-button";
+import {ArrowLeftIcon} from "@heroicons/react/24/solid";
 
 const postFetcher = async (url: string, email: string) => {
     const response = await fetch(url, {
@@ -37,6 +39,14 @@ const Profile = () => {
         email ? ['/api/post/posts', email] : null,
         ([url, email]) => postFetcher(url, email)
     );
+
+    const [tab, setTab] = useState('postingan');
+    const [isPending, startTransition] = useTransition();
+    const handleTabChange = (id: string) => {
+      startTransition(() => {
+        setTab(id)
+      });
+    };
 
     const { data: categories, error: categoriesError } = useSWR('/api/category/all-category', fetcher);
 
@@ -83,20 +93,50 @@ const Profile = () => {
     const filteredPosts = posts
       .filter((post: any) => post.user.id === user.id)
 
+    const profile_tab = [
+      {
+        id: "postingan",
+        content: <DisplayPost posts={filteredPosts}/>,
+      },
+      {
+        id: "balasan",
+        content: "balasan di sini"
+      },
+      {
+        id: "riwayat",
+        content: "riwayat di sini"
+      }
+    ]
     
     return (
         <main>
-        <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-4">Profile</h1>
-            <div className="flex items-center mb-6">
+    {/*Profile Home Page*/}
+        <div className="container border-2 mx-auto p-6">
+          {/*Upper Part*/}
+            <div className='flex flex-row place-items-center'>
+              <div className='ml-5'>
+                <button className='p-2 bg-green-800 rounded-md hover:bg-opacity-70 '> 
+                  <ArrowLeftIcon className='h-5 w-5 text-white'/>
+                </button>
+              </div>
+              <div className='ml-6 font-extrabold text-4xl text-black'>
+                Profile
+              </div>
+            </div>
+          {/*Profile Data*/}
+              <div className="flex items-center m-3 ml-5 p-6 bg-white rounded-3xl">
                 <img
                     src={session?.user?.image || "/default-avatar.png"}
                     alt="Profile Picture"
                     className="w-20 h-20 rounded-full mr-4"
                     />
-                <div>
-                    <p className="text-xl font-semibold">Nickname: {user.name}</p>
-                    <p className="text-md text-gray-700">Email: {session?.user?.email}</p>
+                <div className="ml-5">
+                    <h2 className="text-2xl font-semibold">{user.name}</h2>
+                    <ul className="text-gray-700">
+                      <li>Email: {session?.user?.email}</li>
+                    </ul>
+
+              {/*Update Profile*/}
                     <div className="mt-4 flex items-center">
                         <input
                             type="text"
@@ -107,7 +147,7 @@ const Profile = () => {
                             />
                         <button
                             onClick={handleNameChange}
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                            className="bg-yellow-500 text-black text-sm px-3 py-2 rounded-md"
                             >
                             Update Name
                         </button>
@@ -115,10 +155,27 @@ const Profile = () => {
                 </div>
             </div>
 
-            <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-2">Your Posts</h2>
-                <DisplayPost posts={filteredPosts} />
-            </div>
+    {/*Tab Menu*/}  
+          <div className="m-3 ml-5 bg-green-800 rounded-2xl flex flex-row place-content-evenly">
+            <TabButton
+              selectTab={()=> handleTabChange("postingan")}
+              active={tab === "postingan"}>
+              Postingan
+            </TabButton>
+            <TabButton
+              selectTab={()=> handleTabChange("balasan")}
+              active={tab === "balasan"}>
+              Balasan
+            </TabButton>
+            <TabButton
+              selectTab={()=> handleTabChange("riwayat")}
+              active={tab === "riwayat"}>
+              Riwayat
+            </TabButton>
+          </div>
+          <div className='relative mt-5 ml-5 m-3 w-auto text-black'>
+            {profile_tab.find((t) => t.id == tab).content}
+          </div>
         </div>
         </main>
     );
