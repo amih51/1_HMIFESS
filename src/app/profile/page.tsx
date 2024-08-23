@@ -4,7 +4,6 @@ import { useState, useEffect, Key } from "react";
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { fetcher } from "@/lib/fetcher";
-import Nav from "@/components/nav";
 import DisplayPost from "@/components/display-post";
 import LoaderBar from "@/components/loader-bar";
 
@@ -87,7 +86,6 @@ const Profile = () => {
     
     return (
         <main>
-        <Nav />
         <div className="container mx-auto p-6">
             <h1 className="text-3xl font-bold mb-4">Profile</h1>
             <div className="flex items-center mb-6">

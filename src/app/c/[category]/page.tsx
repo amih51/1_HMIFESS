@@ -3,7 +3,6 @@ import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
 import LoginPage from "@/app/auth/signin/page";
 import CreatePost from "@/components/create-post";
 import CategoryPosts from "@/components/category-home";
-import Nav from "@/components/nav";
 
 export default async function Page({ params }: { params: { category: string } }) {
     const session = await getServerSession(authOptions);
@@ -19,7 +18,6 @@ export default async function Page({ params }: { params: { category: string } })
 
     return (
         <main className="bg-backgroundLogo">
-            <Nav />
             <div className="items-center font-mono">
                 <h1 className="text-5xl">Category: {params.category}</h1>
                 <CreatePost category={params.category} />

@@ -24,7 +24,6 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-backgroundLogo">
         <Providers>
-          {/* Menggunakan NavWrapper yang merupakan Client Component */}
           <NavWrapper />
           {children}
         </Providers>

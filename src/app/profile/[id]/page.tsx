@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
 import LoginPage from "@/app/auth/signin/page";
-import Nav from "@/components/nav";
 import DisplayPost from "@/components/display-post";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -25,7 +24,6 @@ export default async function Page({ params }: { params: { id: string } }) {
 
     return (
         <main className="bg-backgroundLogo">
-            <Nav />
             <div className="items-center font-mono">
                 <h1 className="text-5xl">ID: {params.id}</h1>
                 <DisplayPost posts={filteredPosts} />
