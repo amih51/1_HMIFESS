@@ -1,22 +1,20 @@
-// pages/api/user/profile.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
-import { getSession } from 'next-auth/react';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'GET') {
+  if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
   try {
-    const session = await getSession({ req });
+    const { email } = req.body;
 
-    if (!session || !session.user?.email) {
-      return res.status(401).json({ message: 'Unauthorized' });
+    if (!email) {
+      return res.status(401).json({ message: 'Unauthorized: Email is required' });
     }
 
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email },
     });
 
     if (!user) {

@@ -1,4 +1,3 @@
-// pages/api/post/create.ts
 import prisma from '@/lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 

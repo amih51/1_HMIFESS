@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import VoteBtn from "./vote-btn";
 import Comments from "./comments";
-import LoaderBar from "./loader-bar"; // Import LoaderBar
+import LoaderBar from "./loader-bar"; 
 
 interface Post {
   id: string;
@@ -27,7 +27,7 @@ interface DisplayPostProps {
 
 const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
   if (!posts || posts.length === 0) {
-    return <LoaderBar />; // Tampilkan loader saat posts masih kosong atau belum ada
+    return <LoaderBar />; 
   }
 
   return (

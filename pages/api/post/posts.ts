@@ -1,4 +1,3 @@
-// pages/api/post/all-post.ts
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -10,6 +9,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             include: {
                 user: true, 
                 category: true, 
+            },
+            orderBy: {
+                createdAt: 'desc', 
             },
         });
 

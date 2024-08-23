@@ -1,28 +1,22 @@
-// components/category-home.tsx
 "use client"
 
-import { useEffect, useState } from "react";
+import useSWR from "swr";
 import DisplayPost from "./display-post";
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 const CategoryPosts = ({ category }: { category: string }) => {
-  const [posts, setPosts] = useState<any[]>([]);
+  const { data: allPosts = [], error } = useSWR('/api/post/posts', fetcher);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch(`/api/post/category-post?category=${category}`);
-        const data = await res.json();
-        setPosts(data.reverse());
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      }
-    };
+  if (error) return <div>Failed to load posts</div>;
+  if (!allPosts.length) return <div>Loading...</div>;
 
-    fetchPosts();
-  }, [category]);
+  const filteredPosts = category
+    ? allPosts.filter((post: any) => post.category.name === category)
+    : allPosts;
 
   return (
-    <DisplayPost posts={posts} />
+    <DisplayPost posts={filteredPosts} />
   );
 };
 
