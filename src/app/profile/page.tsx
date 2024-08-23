@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { fetcher } from "@/lib/fetcher";
 import Nav from "@/components/nav";
 import DisplayPost from "@/components/display-post";
+import LoaderBar from "@/components/loader-bar";
 
 const postFetcher = async (url: string, email: string) => {
     const response = await fetch(url, {
@@ -78,7 +79,7 @@ const Profile = () => {
     if (userError) return <div>Failed to load user profile.</div>;
     if (postsError) return <div>Failed to load posts.</div>;
     if (categoriesError) return <div>Failed to load categories.</div>;
-    if (!user || !posts || !categories) return <div>Loading...</div>;
+    if (!user || !posts || !categories) return <LoaderBar />;
 
     const filteredPosts = posts
       .filter((post: any) => post.user.id === user.id)
