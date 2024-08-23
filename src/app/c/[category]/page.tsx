@@ -1,19 +1,14 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
-import LoginPage from "@/app/auth/signin/page";
 import CreatePost from "@/components/create-post";
 import CategoryPosts from "@/components/category-home";
+import { redirect } from "next/navigation";
 
 export default async function Page({ params }: { params: { category: string } }) {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-        return (
-            <div className="flex min-h-screen flex-col items-center p-5">
-                <p>Belum login</p>
-                <LoginPage />
-            </div>
-        );
+        redirect('/')
     }
 
     return (
