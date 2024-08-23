@@ -1,18 +1,21 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
 import DisplayPost from "@/components/display-post";
+import { redirect } from "next/navigation";
+import ProfilePosts from "@/components/profile-home";
 
 export default async function Page({ params }: { params: { id: string } }) {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/post/posts`);
-    const allPosts = await res.json();
+    const session = await getServerSession(authOptions);
 
-    const filteredPosts = allPosts
-      .filter((post: any) => post.user.id === params.id)
-      .filter((post: any) => post.isAnon === false);
+    if (!session) {
+        redirect('/')
+    }
 
     return (
         <main className="bg-backgroundLogo">
             <div className="items-center font-mono">
                 <h1 className="text-5xl">ID: {params.id}</h1>
-                <DisplayPost posts={filteredPosts} />
+                <ProfilePosts id={params.id} />
             </div>
         </main>
     );
