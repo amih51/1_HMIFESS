@@ -1,59 +1,97 @@
 "use client"
-
 import { useState } from 'react';
+import PostCreator from './post-creator';
+import MediaPreview from './media-preview';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+type MediaType = 'image' | 'video';
 
-interface CreatePostProps {
+interface MediaUrl {
+  url: string;
+  type: MediaType;
+}
+
+interface PostData {
+  content: string;
+  mediaUrls: MediaUrl[];
+}
+
+interface CreatePostRequest {
+  body: string;
+  mediaUrls: MediaUrl[];
+  email: string;
+  isAnon: boolean;
   category: string;
 }
 
-export default function CreatePost({ category }: CreatePostProps) {
-  const [body, setBody] = useState('');
-  const [isAnon, setIsAnon] = useState(true);
-  const router = useRouter();
+interface MediaUrl {
+  url: string;
+  type: 'image' | 'video';
+}
+
+interface PostData {
+  content: string;
+  mediaUrls: MediaUrl[];
+}
+
+const CreatePost = () => {
+  const [postData, setPostData] = useState<PostData | null>(null);
+  const [isAnon, setIsAnon] = useState(false);
+  const [category, setCategory] = useState('');
   const { data: session } = useSession();
-  const email = session?.user?.email;
+  const handlePostCreation = (data: PostData) => {
+    setPostData(data);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!session) {
+      return console.error('Session not found');
+    }
+
+    const email = session.user?.email;
+    if (!email) {
+      return console.error('User email not found');
+    }
     const response = await fetch('/api/post/create', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ body, email, isAnon, category }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        body: postData?.content,
+        mediaUrls: postData?.mediaUrls,
+        email,
+        isAnon,
+        category,
+      }),
     });
 
     if (response.ok) {
-      router.push(`/c/${category}`);
+      console.log('Post created successfully');
     } else {
-      const error = await response.json();
-      console.error('Failed to create post', error.message);
+      console.error('Error creating post');
     }
   };
 
   return (
-    <div className='border'> 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="body">Post:</label>
-          <input
-            type="text"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            required
-            />
-        </div>
-        <div>
-          <label htmlFor="isAnon">Anonymous:</label>
-          <input
-            type="checkbox"
-            checked={isAnon}
-            onChange={(e) => setIsAnon(e.target.checked)}
-          />
-        </div>
-        <button type="submit">Create Post</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <PostCreator onSubmit={handlePostCreation} />
+      {postData && <MediaPreview urls={postData.mediaUrls.map((mediaUrl) => mediaUrl.url)} />}
+      <label>
+        Anonymous:
+        <input
+          type="checkbox"
+          checked={isAnon}
+          onChange={(e) => setIsAnon(e.target.checked)}
+        />
+      </label>
+      <input
+        type="text"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        placeholder="Category"
+      />
+      <button type="submit">Create Post</button>
+    </form>
   );
-}
+};
+
+export default CreatePost;

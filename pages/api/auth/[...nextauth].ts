@@ -19,13 +19,7 @@ export const authOptions = {
      * @param {User} user - The user object
      * @returns {object} - The modified session object
      */
-    session({ session, user }: { session: NextAuthSession.Session, user: User }): NextAuthSession.Session {
-      if (session.user) {
-        session.user.id = user.id;
-        session.user.email = user.email as string;
-      }
-      return session;
-    },
+
     signIn({ user }: { user: { email: string } }) {
       const nimAwal = ['196', '135', '182'];
       if (

@@ -1,9 +1,13 @@
-// pages/api/post/create.ts
 import prisma from '@/lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { PostCreateInput } from '@prisma/client';
+
+interface CustomPostCreateInput extends PostCreateInput {
+  mediaUrls: string[];
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { body, email, isAnon, category } = req.body;
+  const { body, mediaUrls, email, isAnon, category } = req.body;
 
   if (!body || !email || typeof isAnon !== 'boolean' || !category) {
     return res.status(400).json({ message: 'Missing or invalid input' });
@@ -30,6 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {
         title: '',
         body,
+        mediaUrls, // Simpan URL media
         isAnon,
         category: { connect: { id: categoryData.id } },
         user: { connect: { id: user.id } },
