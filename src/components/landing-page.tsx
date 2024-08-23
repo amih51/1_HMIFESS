@@ -1,9 +1,9 @@
-"use client"  // Use the client keyword
-import { signIn } from "next-auth/react"; // Import the signIn function
+"use client"  
+
+import { signIn } from "next-auth/react"; 
 
 export default function Landing() {
 
-    // No navigation bar for unauthenticated users
     return (
       <main className="flex items-center justify-center h-screen">
         <div className="grid grid-cols-2 w-full h-full relative">
@@ -12,15 +12,12 @@ export default function Landing() {
                 alt="Logo HMIF" 
                 className="absolute w-16 h-16 left-10 top-10"
             />
-          {/* Kolom Kiri: Image */}
             <img 
                 src="landing.svg" 
                 alt="Deskripsi Gambar" 
                 className="w-full h-full object-cover"
             />
-          {/* </div> */}
           
-          {/* Kolom Kanan: Teks Landing */}
           <div className="flex items-center justify-center bg-white p-8">
             <div className="p-4">
               <h1 className="text-5xl font-bold mb-4">Your Space, Your Voice.</h1>

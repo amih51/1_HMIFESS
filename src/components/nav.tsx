@@ -15,7 +15,7 @@ export default function Nav() {
   const [category, setCategory] = useState<OptionType[]>([]);
   const { data: session } = useSession();
   const router = useRouter();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State untuk mengontrol dropdown
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
 
   useEffect(() => {
     fetchData();
@@ -35,16 +35,15 @@ export default function Nav() {
       const res = await fetch("/api/category/all-category");
       const data = await res.json();
 
-      // Pastikan data yang diambil adalah array sebelum diset
       if (Array.isArray(data)) {
         setCategory(data);
       } else {
         console.error("Data fetched is not an array", data);
-        setCategory([]); // Atur kategori menjadi array kosong jika data tidak valid
+        setCategory([]); 
       }
     } catch (error) {
       console.error("Failed to fetch categories:", error);
-      setCategory([]); // Atur kategori menjadi array kosong jika terjadi error
+      setCategory([]); 
     }
   };
 
@@ -77,7 +76,7 @@ export default function Nav() {
           <div className="flex items-center justify-between h-8">
             <select
               name="Category"
-              title="Select a category" // Add a title attribute
+              title="Select a category" 
               className="basic-single-select px-3 py-2 rounded-md border border-gray-300 bg-white shadow-sm"
               onChange={handleCategoryChange}
             >

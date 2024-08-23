@@ -3,7 +3,8 @@
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import CreateComment from './create-comment';
-import { fetcher } from '@/lib/fetcher'; // Pastikan fetcher.ts sudah ada
+import { fetcher } from '@/lib/fetcher';
+import LoaderBar from './loader-bar';
 
 interface Comment {
   id: string;
@@ -23,7 +24,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
   const { data: session } = useSession();
 
   if (error) return <div>Failed to load comments.</div>;
-  if (!comments) return <div>Loading...</div>;
+  if (!comments) return <LoaderBar />;
 
   return (
     <div>

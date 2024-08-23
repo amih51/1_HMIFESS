@@ -38,7 +38,7 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
           {!post.isAnon && (
             <>
               <img src={post.user.image} alt="profile photo" />
-              <Link href={`/profile/${post.user.id}`} className="text-blue-500 hover:underline">
+              <Link href={`/profile/${post.user.id}`} className="text-blue-950 text-3xl hover:underline">
                 user: {post.user.name}
               </Link>
               <br />

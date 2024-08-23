@@ -3,8 +3,9 @@
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
 import { useState } from 'react';
+import LoaderBar from './loader-bar';
 
-type VoteType = boolean; // true for upvote, false for downvote
+type VoteType = boolean; 
 type VoteStatus = "none" | "upvoted" | "downvoted";
 
 interface VoteBtnProps {
@@ -20,7 +21,7 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
     const [voteCount, setVoteCount] = useState<number>(postData?.voteCount || 0);
 
     if (voteError || postError) return <div>Failed to load vote data.</div>;
-    if (!voteData || !postData) return <div>Loading...</div>;
+    if (!voteData || !postData) return <LoaderBar />;
 
     const handleVote = async (type: VoteType) => {
         try {
@@ -37,10 +38,8 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
             });
 
             if (res.ok) {
-                // Toggle the vote status
                 setVoteStatus(voteStatus === (type ? "upvoted" : "downvoted") ? "none" : (type ? "upvoted" : "downvoted"));
 
-                // Update vote count
                 const updatedCountRes = await fetch(`/api/post/${postId}`);
                 const { voteCount } = await updatedCountRes.json();
                 setVoteCount(voteCount);
@@ -54,13 +53,13 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
         <>
             <div>
                 <button
-                    onClick={() => handleVote(true)} // true for upvote
+                    onClick={() => handleVote(true)} 
                     style={{ color: voteStatus === "upvoted" ? "red" : "black" }}
                 >
                     Upvote
                 </button>
                 <button
-                    onClick={() => handleVote(false)} // false for downvote
+                    onClick={() => handleVote(false)} 
                     style={{ color: voteStatus === "downvoted" ? "red" : "black" }}
                 >
                     Downvote
