@@ -10,13 +10,13 @@ export default function Nav() {
   const session = useSession();
 
   return session ? (
-    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-4/5 bg-white z-50">
+    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white z-50">
       <div className="p-6 md:h-1/5">
         <Link href="/">
           <h1 className="pl-6 text-2xl font-bold text-black">HMIFess</h1>
         </Link>
       </div>
-      <nav className="flex flex-col flex-shrink-0 justify-between h-full overflow-y-auto">
+      <nav className="flex flex-col flex-shrink-0 justify-between h-3/4 overflow-y-auto bg-white">
         <ul className="hidden md:block mx-6">
           <li>
             <Link href="/" className="md:flex items-center px-6 py-2 rounded-3xl text-gray-700 hover:bg-gray-200 transition-colors duration-100">
@@ -31,7 +31,7 @@ export default function Nav() {
             </Link>
           </li>
         </ul>
-        <div className="pt-4 pr-8 md:pr-0 mx-6 m">
+        <div className="pt-4 pr-8 md:pr-0 mx-6">
           <DisplayName />
         </div>
       </nav>

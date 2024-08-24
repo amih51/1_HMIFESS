@@ -30,7 +30,7 @@ export default function DisplayName() {
         />
         <div className="hidden md:flex flex-col text-left overflow-hidden">
           <p className="text-lg font-semibold text-gray-800 truncate">{name}</p>
-          <p className="text-gray-600 truncate">{email}</p>
+          <p className="text-sm text-gray-600 truncate">{email}</p>
         </div>
       </button>
 
