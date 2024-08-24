@@ -22,7 +22,9 @@ export default async function Home() {
           <SelectCategory/>
         </div>
         <SearchBar />
-        <AllPosts />
+        <div className="pt-6">
+          <AllPosts />
+        </div>
       </main>
     </div>
   );

@@ -38,26 +38,32 @@ const imageStyle = {
 
   return (
     <ul className=''>
+      <li className="border-b-2 border-gray-500"></li>
       {posts.map((post) => (
-        <li key={post.id} className='border-t-2 border-gray-500 mt-7 py-3'>
+        <li key={post.id} className='border-b-2 border-gray-500 py-3'>
           {/*Username or Anonymous & Profile Image*/}
           <div className="flex flex-row font-bold place-items-center">
             {post.isAnon ? (
               <>
-              <UserCircleIcon className="w-12 h-12"/>
+              <UserCircleIcon className="w-12 h-12 -translate-x-1"/>
               <div className="flex flex-col">
                 <p className="ml-3">Anonymous</p>
                 {/*Updated At*/}
-                <p className="ml-3 text-[10px] text-gray-400 font-normal">updated on {new Date(post.updatedAt).toLocaleString()} <br /></p>
+                <p className="ml-3 text-[10px] text-gray-400 font-normal">{new Date(post.createdAt).toLocaleString()} <br /></p>
               </div>
               </>
               ) : 
               (
               <>
-              <img src={post.user.image} alt="profile photo" width={40} height={40} style={imageStyle} />
-              <Link href={`/profile/${post.user.id}`} className="ml-3 hover:underline">
-                {post.user.name}
+              <Link href={`/profile/${post.user.id}`}>
+                <img src={post.user.image} alt="profile photo" width={40} height={40} style={imageStyle} />
               </Link>
+              <div className="flex flex-col">
+                <Link href={`/profile/${post.user.id}`} className="ml-3 hover:underline">
+                  {post.user.name}
+                </Link>
+                <p className="ml-3 text-[10px] text-gray-400 font-normal">{new Date(post.createdAt).toLocaleString()} <br /></p>
+              </div>
               </>
               )}
           </div>
@@ -76,8 +82,6 @@ const imageStyle = {
               <ChatBubbleOvalLeftIcon className="w-5 h-5"/>
             </button>
           </div>
-          {/*Created On*/}
-          <p className="text-[10px] mt-0 text-gray-400 font-normal">created {new Date(post.createdAt).toLocaleString()}</p>
           {/*Comments*/}
           {/* <Comments postId={post.id} /> */}
         </li>

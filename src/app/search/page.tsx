@@ -53,7 +53,9 @@ const SearchResults: React.FC = () => {
         <SearchBar />
 
         {filteredPosts.length > 0 ? (
-          <DisplayPost posts={filteredPosts} />
+          <div className="pt-6">
+            <DisplayPost posts={filteredPosts} />
+          </div>
         ) : (
           <div className="text-center mt-10">
             <p className="text-gray-500">No results found for &quot;{q}&quot;.</p>
