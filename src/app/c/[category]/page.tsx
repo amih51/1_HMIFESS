@@ -35,8 +35,8 @@ export default function Page({ params }: { params: { category: string } }) {
     const filteredPosts = posts.filter((post) => post.category.name === params.category);
 
     return (
-        <div className="bg-white min-h-screen">
-            <main className="bg-white p-7 flex flex-col min-h-screen">
+        <main className="bg-white min-h-screen">
+            <div className="bg-white p-7 flex flex-col min-h-screen">
                 {/* Upper Part */}
                 <div className="flex flex-row place-items-center">
                     <div className="font-sans font-bold text-4xl">Category: {params.category}</div>
@@ -54,7 +54,7 @@ export default function Page({ params }: { params: { category: string } }) {
                         <p className="text-gray-500">No posts found for category &quot{params.category}&quot.</p>
                     </div>
                 )}
-            </main>
-        </div>
+            </div>
+        </main>
     );
 }

@@ -39,6 +39,7 @@ const imageStyle = {
     <ul className=''>
       <li className="border-b-2 border-gray-500"></li>
       {posts.map((post) => (
+      <a href={`/m/${post.id}`}>
         <li key={post.id} className='border-b-2 border-gray-500 py-3'>
           {/*Username or Anonymous & Profile Image*/}
           <div className="flex flex-row font-bold place-items-center">
@@ -53,7 +54,7 @@ const imageStyle = {
               </>
               ) : 
               (
-              <>
+                <>
               <Link href={`/profile/${post.user.id}`}>
                 <Image src={post.user.image} alt="profile photo" width={40} height={40} style={imageStyle} />
               </Link>
@@ -84,6 +85,7 @@ const imageStyle = {
           {/*Comments*/}
           {/* <Comments postId={post.id} /> */}
         </li>
+      </a>
       ))}
     </ul>
   );
