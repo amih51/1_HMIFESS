@@ -3,6 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
+import Image from 'next/image';
 
 export default function Landing() {
   const searchParams = useSearchParams();
@@ -21,14 +22,18 @@ export default function Landing() {
     <main className="flex items-center justify-center h-screen -mt-16 md:mt-0 md:-ml-64 z-10">
       <div className="grid grid-rows-[auto_1fr] md:grid-cols-2 md:grid-rows-1 w-full h-full">
         <div className="relative h-32 md:h-full w-full">
-          <img 
+          <Image
             src="hmifess-logo-bg.svg" 
             alt="Logo HMIF" 
+            width={128}
+            height={128}
             className="absolute w-32 left-10 top-10"
           />
-          <img 
+          <Image
             src="landing.svg" 
             alt="Deskripsi Gambar" 
+            width={100}
+            height={100}
             className="w-full h-full object-cover"
           />
         </div>

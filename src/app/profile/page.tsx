@@ -7,8 +7,8 @@ import { fetcher } from "@/lib/fetcher";
 import DisplayPost from "@/components/display-post";
 import LoaderBar from "@/components/loader-bar";
 import TabButton from "@/components/tab-button";
-import {ArrowLeftIcon} from "@heroicons/react/24/solid";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 const postFetcher = async (url: string, email: string) => {
     const response = await fetch(url, {
@@ -116,11 +116,13 @@ const Profile = () => {
             </div>
             {/*Profile Data*/}
             <div className="flex items-center py-6 bg-white">
-              <img
-                  src={session?.user?.image || "/default-avatar.png"}
-                  alt="Profile Picture"
-                  className="w-20 h-20 rounded-full mr-4"
-                  />
+              <Image
+                src={session?.user?.image || "/default-avatar.png"}
+                alt="Profile Picture"
+                width={80}
+                height={80}
+                className="w-20 h-20 rounded-full mr-4"
+              />
               <div className="ml-5">
               <form onSubmit={handleNameChange} className="flex ">
                 <input

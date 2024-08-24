@@ -3,6 +3,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function DisplayName() {
   const { data: session } = useSession();
@@ -43,10 +44,12 @@ export default function DisplayName() {
       </div>
       
       <button onClick={toggleDropdown} className="flex items-center space-x-4 w-full">
-        <img
-          className="w-8 h-8 rounded-full"
+        <Image
           src={imageUrl || 'default-profile.png'}
           alt={name || 'warga biasa'}
+          width={32}
+          height={32}
+          className="w-8 h-8 rounded-full"
         />
         <div className="hidden md:flex flex-col text-left overflow-hidden">
           <p className="text-lg font-semibold text-gray-800 truncate">{name}</p>

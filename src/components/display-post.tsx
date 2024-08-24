@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import VoteBtn from "./vote-btn";
-import Comments from "./comments";
 import LoaderBar from "./loader-bar"; 
 import Image from "next/image";
 import { ChatBubbleOvalLeftIcon, UserCircleIcon } from "@heroicons/react/24/outline";
@@ -56,7 +55,7 @@ const imageStyle = {
               (
               <>
               <Link href={`/profile/${post.user.id}`}>
-                <img src={post.user.image} alt="profile photo" width={40} height={40} style={imageStyle} />
+                <Image src={post.user.image} alt="profile photo" width={40} height={40} style={imageStyle} />
               </Link>
               <div className="flex flex-col">
                 <Link href={`/profile/${post.user.id}`} className="ml-3 hover:underline">
