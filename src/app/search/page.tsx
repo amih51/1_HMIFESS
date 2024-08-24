@@ -43,13 +43,20 @@ const SearchResults: React.FC = () => {
   return (
     <div className="bg-white">
       <main className="p-7 flex flex-col min-h-screen">
-      {/*Upper Part*/}
+        {/* Upper Part */}
         <div className="flex flex-row place-items-center">
           <div className="hidden md:block font-sans font-bold text-2xl">Hasil: {q}</div>
-          <SelectCategory/>
+          <SelectCategory />
         </div>
         <SearchBar />
-        <DisplayPost posts={filteredPosts} />
+
+        {filteredPosts.length > 0 ? (
+          <DisplayPost posts={filteredPosts} />
+        ) : (
+          <div className="text-center mt-10">
+            <p className="text-gray-500">No results found for "{q}".</p>
+          </div>
+        )}
       </main>
     </div>
   );
