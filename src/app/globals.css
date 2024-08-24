@@ -10,9 +10,12 @@
 
     --logo-bg: #2E7348;
     --logo-color: #E6B544;
+
+    --ijo-primary: #23583A;
+    --ijo-400: #093F20;
   }
   
-  @media (prefers-color-scheme: dark) {
+  /* @media (prefers-color-scheme: dark) {
     :root {
       --foreground-rgb: 255, 255, 255;
       --background-start-rgb: 0, 0, 0;
@@ -21,7 +24,7 @@
       --logo-bg: #E6B544;
       --logo-color: #2E7348;
     }
-  }
+  } */
 }
     
 @layer utilities {
