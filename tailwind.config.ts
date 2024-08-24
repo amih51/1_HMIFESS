@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         backgroundLogo: 'var(--logo-bg)',
         colorLogo: 'var(--logo-color)',
+
+        ijoPrimary: 'var(--ijo-primary)',
+        ijo400: 'var(--ijo-400)',
       },
     },
   },
