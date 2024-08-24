@@ -6,6 +6,8 @@ import { useSession } from "next-auth/react";
 import { HomeIcon, UserIcon } from "@heroicons/react/24/outline";
 import DisplayName from "./display-name";
 import CreatePostButton from "./create-post-btn";
+import Image from 'next/image';
+
 
 export default function Nav() {
   const { data: session } = useSession();
@@ -16,7 +18,12 @@ export default function Nav() {
     <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white border-r-2">
       <div className="p-6 mx-6 md:h-1/5 md:pt-16">
         <Link href="/">
-          <img src="hmifess-logo.svg" alt="Logo HMIFess" className="w-32"/>
+          <Image
+            src="/hmifess-logo.svg"
+            alt="Logo HMIFess"
+            width={240}
+            height={120}
+          />
         </Link>
       </div>
       <div className="md:hidden">
