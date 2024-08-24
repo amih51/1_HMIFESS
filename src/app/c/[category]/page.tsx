@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: { category: string } })
         <main className="bg-white p-7 flex flex-col min-h-screen">
         {/*Upper Part*/}
             <div className="flex flex-row place-items-center">
-                <div className="font-sans font-bold text-2xl">category: {params.category}</div>
+                <div className="font-sans font-bold text-4xl">category: {params.category}</div>
                 <SelectCategory/>
             </div>
             <SearchBar/>

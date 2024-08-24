@@ -45,7 +45,7 @@ const SearchResults: React.FC = () => {
       <main className="p-7 flex flex-col min-h-screen">
         {/* Upper Part */}
         <div className="flex flex-row place-items-center">
-          <div className="hidden md:block font-sans font-bold text-2xl">Hasil: {q}</div>
+          <div className="hidden md:block font-sans font-bold text-4xl">Result for "{q}"</div>
           <SelectCategory />
         </div>
         <SearchBar />
