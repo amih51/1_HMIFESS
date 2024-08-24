@@ -8,6 +8,7 @@ import DisplayPost from "@/components/display-post";
 import LoaderBar from "@/components/loader-bar";
 import TabButton from "@/components/tab-button";
 import {ArrowLeftIcon} from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/outline";
 
 const postFetcher = async (url: string, email: string) => {
     const response = await fetch(url, {
@@ -62,7 +63,7 @@ const Profile = () => {
         }
     }, [user]);
 
-    const handleNameChange = async () => {
+    const handleNameChange = async (e: React.FormEvent) => {
         if (!newName.trim()) return;
       
         try {
@@ -105,47 +106,46 @@ const Profile = () => {
     ]
     
     return (
-        <main>
-    {/*Profile Home Page*/}
-        <div className="container mx-auto p-6">
+      <div className="bg-white">
+        <main className="p-7 flex flex-col min-h-screen">
           {/*Upper Part*/}
             <div className='flex flex-row place-items-center'>
-              <div className='ml-6 font-bold text-4xl text-black'>
+              <div className='font-sans font-bold text-4xl'>
                 Profile
               </div>
             </div>
-          {/*Profile Data*/}
-              <div className="flex items-center m-3 ml-5 p-6 bg-white rounded-3xl">
-                <img
-                    src={session?.user?.image || "/default-avatar.png"}
-                    alt="Profile Picture"
-                    className="w-20 h-20 rounded-full mr-4"
-                    />
-                <div className="ml-5">
-                    <h2 className="text-2xl font-semibold">{user.name}</h2>
-                    <ul className="text-gray-700">
-                      <li>Email: {session?.user?.email}</li>
-                    </ul>
-
-              {/*Update Profile*/}
-                    <form onSubmit={handleNameChange} className="mt-4 flex items-center">
-                        <input
-                            type="text"
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                            placeholder="Enter new name"
-                            className="border p-2 rounded-md mr-2"
-                            />
-                    </form>
-                </div>
+            {/*Profile Data*/}
+            <div className="flex items-center py-6 bg-white">
+              <img
+                  src={session?.user?.image || "/default-avatar.png"}
+                  alt="Profile Picture"
+                  className="w-20 h-20 rounded-full mr-4"
+                  />
+              <div className="ml-5">
+              <form onSubmit={handleNameChange} className="flex ">
+                <input
+                  type="text"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="Enter new name"
+                  className="flex-grow text-2xl font-semibold w-32 focus:outline-none"
+                />
+                <PencilIcon className="w-2 h-2"/>
+              </form>
+              <p className="text-gray-400 text-sm">Email: {session?.user?.email}</p>
+              <div className="flex felx-row text-gray-500">
+                <div><span className="font-semibold text-black">xx</span> menfess</div>
+                <div className="px-6"><span className="font-semibold text-black">xx</span> komentar</div>
+              </div>
             </div>
+          </div>
 
-    {/*Tab Menu*/}  
-            <div className="m-3 ml-5 bg-transparent flex flex-row border-b-2">
+          {/*Tab Menu*/}  
+          <div className="bg-transparent flex flex-row border-b-2">
             <TabButton
               selectTab={()=> handleTabChange("postingan")}
               active={tab === "postingan"}>
-              Postingan
+              Menfess
             </TabButton>
             <TabButton
               selectTab={()=> handleTabChange("balasan")}
@@ -153,11 +153,11 @@ const Profile = () => {
               Balasan
             </TabButton>
           </div>
-          <div className='relative mt-5 ml-5 m-3 w-auto text-black'>
+          <div className='relative w-auto text-black'>
             {profile_tab.find((t) => t.id == tab)?.content}
           </div>
-        </div>
         </main>
+      </div>
     );
 };
 
