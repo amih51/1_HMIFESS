@@ -54,7 +54,7 @@ export default function SelectCategory() {
     <select
         name="Category"
         title="Select a category" 
-        className="basic-single-select px-3 py-1 text-xs rounded-lg border-2 border-green-700 bg-white shadow-sm mt-2.5 cursor-pointer"
+        className="basic-single-select px-3 py-1 text-xs rounded-lg border-2 border-black bg-white shadow-sm mt-2.5 cursor-pointer"
         onChange={handleCategoryChange}
     >
         <option value="">Select Category</option>
