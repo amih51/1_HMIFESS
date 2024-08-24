@@ -121,7 +121,7 @@ const Profile = () => {
                 alt="Profile Picture"
                 width={80}
                 height={80}
-                className="w-20 h-20 rounded-full mr-4"
+                className="w-20 h-20 rounded-full"
               />
               <div className="ml-5">
               <form onSubmit={handleNameChange} className="flex ">

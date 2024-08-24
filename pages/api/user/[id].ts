@@ -1,26 +1,33 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { PrismaClient } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+const prisma = new PrismaClient();
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: { id },
-      include: {
-        posts: true,
-        createdCategories: true,
-        joinedCategories: true,
-      },
-    });
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+    const { id } = req.query;
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    if (typeof id !== 'string') {
+        return res.status(400).json({ error: "Invalid user ID" });
     }
 
-    return NextResponse.json(user);
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id },
+            include: {
+                posts: true,
+                comments: true,
+            },
+        });
+
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ error: "User not found" });
+        }
+    } catch (error) {
+        console.error('Failed to fetch user:', error);
+        res.status(500).json({ error: "Failed to fetch user" });
+    }
+};
+
+export default handler;

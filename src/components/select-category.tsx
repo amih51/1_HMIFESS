@@ -33,11 +33,9 @@ export default function SelectCategory() {
       if (Array.isArray(data)) {
         setCategory(data);
       } else {
-        console.error("Data fetched is not an array", data);
         setCategory([]); 
       }
     } catch (error) {
-      console.error("Failed to fetch categories:", error);
       setCategory([]); 
     }
   };
