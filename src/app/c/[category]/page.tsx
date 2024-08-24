@@ -25,8 +25,8 @@ export default async function Page({ params }: { params: { category: string } })
 
         {/*Content*/}
             <div className="items-center ">
-                <CreatePost category={params.category} />
-                <SelectCategory />
+                {/* <CreatePost category={params.category} /> */}
+                {/* <SelectCategory /> */}
                 <CategoryPosts category={params.category} />
             </div>
         </main>
