@@ -47,9 +47,9 @@ const imageStyle = {
               <>
               <UserCircleIcon className="w-12 h-12 -translate-x-1"/>
               <div className="flex flex-col">
-                <p className="ml-3">Anonymous</p>
+                <p className="ml-1">Warga Biasa</p>
                 {/*Updated At*/}
-                <p className="ml-3 text-[10px] text-gray-400 font-normal">{new Date(post.createdAt).toLocaleString()} <br /></p>
+                <p className="ml-1 text-[10px] text-gray-400 font-normal">{new Date(post.createdAt).toLocaleString()} <br /></p>
               </div>
               </>
               ) : 
