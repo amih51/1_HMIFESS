@@ -39,7 +39,7 @@ const imageStyle = {
   return (
     <ul className=''>
       {posts.map((post) => (
-        <li key={post.id} className='border-t-2 border-gray-500 mt-7 py-3 px-5 shadow-xl rounded-md'>
+        <li key={post.id} className='border-t-2 border-gray-500 mt-7 py-3 px-5'>
           {/*Username or Anonymous & Profile Image*/}
           <div className="flex flex-row font-bold place-items-center">
             {post.isAnon ? (
