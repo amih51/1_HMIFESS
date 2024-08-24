@@ -21,7 +21,27 @@ export default function DisplayName() {
   const name = session.user.name;
 
   return (
+    
     <div className="sgrid grid-cols-[auto_1fr] items-center md:p-4 rounded-3xl hover:bg-gray-100 transition-colors duration-100">
+      <div className="hidden md:block">
+        {isDropdownOpen && (
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+            <Link
+              href={`/profile`}
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+              >
+              Profile
+            </Link>
+            <Link
+              href="/api/auth/signout"
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+              >
+              Sign Out
+            </Link>
+          </div>
+        )}
+      </div>
+      
       <button onClick={toggleDropdown} className="flex items-center space-x-4 w-full">
         <img
           className="w-8 h-8 rounded-full"
@@ -34,22 +54,24 @@ export default function DisplayName() {
         </div>
       </button>
 
-      {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-          <Link
-            href={`/profile`}
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-          >
-            Profile
-          </Link>
-          <Link
-            href="/api/auth/signout"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-          >
-            Sign Out
-          </Link>
-        </div>
-      )}
+      <div className="md:hidden">
+        {isDropdownOpen && (
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+            <Link
+              href={`/profile`}
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+              >
+              Profile
+            </Link>
+            <Link
+              href="/api/auth/signout"
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+              >
+              Sign Out
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
