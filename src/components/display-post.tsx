@@ -4,7 +4,7 @@ import VoteBtn from "./vote-btn";
 import Comments from "./comments";
 import LoaderBar from "./loader-bar"; 
 import Image from "next/image";
-import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleOvalLeftIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
 interface Post {
   id: string;
@@ -39,17 +39,12 @@ const imageStyle = {
   return (
     <ul className=''>
       {posts.map((post) => (
-        <li key={post.id} className='border-t-2 border-gray-500 mt-7 py-3 px-5'>
+        <li key={post.id} className='border-t-2 border-gray-500 mt-7 py-3'>
           {/*Username or Anonymous & Profile Image*/}
           <div className="flex flex-row font-bold place-items-center">
             {post.isAnon ? (
               <>
-              <Image
-                src="/blank-profile.webp" 
-                alt="profile_picture"
-                width={40}
-                height={40}
-                style={imageStyle} />
+              <UserCircleIcon className="w-12 h-12"/>
               <div className="flex flex-col">
                 <p className="ml-3">Anonymous</p>
                 {/*Updated At*/}
@@ -71,7 +66,7 @@ const imageStyle = {
             {post.category.name}
           </div>
           {/*Body*/}
-          <div className="mt-2">
+          <div className="my-2">
             {post.body}
           </div>
           {/*Up Vote - Down Vote, Count Vote, & Comment*/}
@@ -84,8 +79,7 @@ const imageStyle = {
           {/*Created On*/}
           <p className="text-[10px] mt-0 text-gray-400 font-normal">created {new Date(post.createdAt).toLocaleString()}</p>
           {/*Comments*/}
-          <Comments postId={post.id} />
-            <br />
+          {/* <Comments postId={post.id} /> */}
         </li>
       ))}
     </ul>
