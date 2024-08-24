@@ -44,24 +44,30 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
   if (!session) return null;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <textarea className='bg-white m-5 rounded'
+    <form onSubmit={handleSubmit} className='flex flex-row mt-4 mb-8'>
+
+      {/*Comment Box*/}
+      <textarea className='w-full bg-white rounded-xl px-5 py-3 ml-5'
         value={body}
         onChange={(e) => setBody(e.target.value)}
-        placeholder="Write a comment..."
+        placeholder="Tambahkan Komentar"
         required
       />
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={isAnon}
-            onChange={(e) => setIsAnon(e.target.checked)}
-          />
-           Post anonymously
-        </label>
+      {/*Anonymous Checkbox & Tombol Kirim*/}
+      <div className='flex flex-col'>
+        <div className='ml-3 text-sm flex items-center'>
+          <label className='place-content-center order border-black flex items-center mr-5'>
+            <input
+              type="checkbox"
+              checked={isAnon}
+              onChange={(e) => setIsAnon(e.target.checked)}
+              className='mr-1'
+            />
+              Anonymous
+          </label>
+        </div>
+        <button type="submit" className='bg-green-700 hover:bg-green-900 m-2 mr-4 px-4 py-2 rounded-full text-white'>Kirim</button>
       </div>
-      <button type="submit" className='bg-green-400 m-5 p-1 rounded'>Post Comment</button>
     </form>
   );
 };

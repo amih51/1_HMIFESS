@@ -27,17 +27,18 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
   if (!comments) return <LoaderBar />;
 
   return (
-    <div className='bg-gray-200 m-5 p-2 rounded'>
-      <h3>Comments</h3>
-      {comments.map((comment: Comment) => (
-        <div key={comment.id} className='bg-gray-100 m-5 rounded'>
-          <p>{comment.body}</p>
-          <small>{comment.isAnon ? 'Anonymous' : comment.user.name}</small>
-        </div>
-      ))}
+    <div className='m-8 p-2 border-t-2 border-gray-700 bg-gray-100 rounded-lg'>
+      <h3 className='font-bold text-lg ml-5'>Komentar</h3>
       {session && (
         <CreateComment postId={postId} />
       )}
+      {comments.map((comment: Comment) => (
+        <div key={comment.id} className='bg-white m-4 rounded-xl px-4 py-2'>
+          <small className='text-gray-500'>{comment.isAnon ? 'Anonymous' : comment.user.name}</small>
+          <p>{comment.body}</p>
+        </div>
+      ))}
+      
     </div>
   );
 };

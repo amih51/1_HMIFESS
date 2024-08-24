@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
 import { useState } from 'react';
 import LoaderBar from './loader-bar';
+import { HandThumbUpIcon, HandThumbDownIcon, ChatBubbleOvalLeftIcon } from '@heroicons/react/24/outline';
 
 type VoteType = boolean; 
 type VoteStatus = "none" | "upvoted" | "downvoted";
@@ -51,23 +52,25 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
 
     return (
         <>
-            <div >
-                <button className='bg-blue-400 p-1 m-5 rounded'
+        <div className='flex flex-row place-items-center'>
+            <div>
+                <button className='bg-gray-300 px-4 py-2 rounded-l-full hover:bg-gray-400'
                     onClick={() => handleVote(true)} 
-                    style={{ color: voteStatus === "upvoted" ? "red" : "black" }}
+                    style={{ color: voteStatus === "upvoted" ? "blue" : "black" }}
                 >
-                    Upvote
+                    <HandThumbUpIcon className='w-5 h-5'/>
                 </button>
-                <button className='bg-red-400 m-5 p-1 rounded'
+                <button className='bg-gray-300 px-4 py-2 rounded-r-full hover:bg-gray-400'
                     onClick={() => handleVote(false)} 
                     style={{ color: voteStatus === "downvoted" ? "red" : "black" }}
                 >
-                    Downvote
+                    <HandThumbDownIcon className='w-5 h-5'/>
                 </button>
             </div>
-            <div className='bg-green-400 m-5 p-1 rounded'>
-                Vote Count: {voteCount}
+            <div className='border border-gray-400 m-2 py-1.5 px-3 text-sm rounded-full text-gray-400'>
+                Vote Count: <b className='text-black'> {voteCount} </b> 
             </div>
+        </div>
         </>
     );
 };
