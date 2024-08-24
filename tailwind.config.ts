@@ -14,6 +14,8 @@ const config: Config = {
 
         ijoPrimary: 'var(--ijo-primary)',
         ijo400: 'var(--ijo-400)',
+
+        shade3: 'var(--shade-3)',
       },
     },
   },
