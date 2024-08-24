@@ -49,7 +49,7 @@ export default function Page({ params }: { params: { category: string } }) {
                     <DisplayPost posts={filteredPosts} />
                 ) : (
                     <div className="text-center mt-10">
-                        <p className="text-gray-500">No posts found for category "{params.category}".</p>
+                        <p className="text-gray-500">No posts found for category &quot{params.category}&quot.</p>
                     </div>
                 )}
             </main>
