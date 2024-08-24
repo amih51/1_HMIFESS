@@ -40,17 +40,7 @@ const SearchResults: React.FC = () => {
   );
 
   return (
-    <ul className="">
-      {filteredPosts.length > 0 ? (
-        filteredPosts.map((post) => (
-          <DisplayPost posts={filteredPosts} />
-        ))
-      ) : (
-        <li>
-          <p>No results found.</p>
-        </li>
-      )}
-    </ul>
+    <DisplayPost posts={filteredPosts} />
   );
 };
 
