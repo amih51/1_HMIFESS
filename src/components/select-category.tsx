@@ -52,11 +52,11 @@ export default function SelectCategory() {
   };
 
   return (
-    <div className="flex items-center justify-between h-8">
+    <div className="flex m-3">
     <select
         name="Category"
         title="Select a category" 
-        className="basic-single-select px-3 py-2 rounded-md border border-gray-300 bg-white shadow-sm"
+        className="basic-single-select px-3 py-1 text-xs rounded-full border-2 border-green-700 bg-white shadow-sm mt-2.5"
         onChange={handleCategoryChange}
     >
         <option value="">Select Category</option>
