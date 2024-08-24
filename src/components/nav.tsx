@@ -10,7 +10,7 @@ export default function Nav() {
   const session = useSession();
 
   return session ? (
-    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white z-50">
+    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white">
       <div className="p-6 md:h-1/5">
         <Link href="/">
           <h1 className="pl-6 text-2xl font-bold text-black">HMIFess</h1>
