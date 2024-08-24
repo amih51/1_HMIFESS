@@ -9,7 +9,9 @@ import DisplayName from "./display-name";
 export default function Nav() {
   const session = useSession();
 
-  return session ? (
+  if (!session) return null;
+
+  return (
     <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white">
       <div className="p-6 md:h-1/5">
         <Link href="/">
@@ -36,6 +38,5 @@ export default function Nav() {
         </div>
       </nav>
     </div>
-  )
-  : null;
+  );
 }
