@@ -22,7 +22,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
       </head>
-      <body className="min-h-screen bg-backgroundLogo">
+      <body className="min-h-screen min-w-min bg-backgroundLogo">
         <Providers>
           <div className="flex flex-col md:flex-row min-h-screen">
             <Nav />
