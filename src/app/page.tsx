@@ -1,9 +1,8 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import CreateCategory from "@/components/create-category";
 import AllPosts from "@/components/home";
 import Landing from "@/components/landing-page";
-import Nav from "@/components/nav";
+import SelectCategory from "@/components/select-category";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -14,12 +13,11 @@ export default async function Home() {
     );
   }
   return (
-    <div>
-      <Nav />
+    <div className="md:pl-64">
       <main className="min-h-screen bg-colorLogo">
           <div className="items-center font-mono">
               <h1 className="text-5xl">Semua kategori</h1>
-              <CreateCategory />
+              <SelectCategory />
               <AllPosts />
           </div>
       </main>

@@ -1,130 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { SessionProvider, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import LoginBtn from "./login-btn";
-
-type OptionType = {
-  value: string;
-  label: string;
-};
+import React from "react";
+import { useSession } from "next-auth/react";
+import { HomeIcon, UserIcon } from "@heroicons/react/24/outline";
+import DisplayName from "./display-name";
 
 export default function Nav() {
-  const [category, setCategory] = useState<OptionType[]>([]);
-  const { data: session } = useSession();
-  const router = useRouter();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+  const session = useSession();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const categoryToOptions = (): OptionType[] => {
-    if (!Array.isArray(category) || category.length < 1) return [];
-
-    return category.map((sub: any) => ({
-      value: sub.name,
-      label: sub.displayName,
-    }));
-  };
-
-  const fetchData = async () => {
-    try {
-      const res = await fetch("/api/category/all-category");
-      const data = await res.json();
-
-      if (Array.isArray(data)) {
-        setCategory(data);
-      } else {
-        console.error("Data fetched is not an array", data);
-        setCategory([]); 
-      }
-    } catch (error) {
-      console.error("Failed to fetch categories:", error);
-      setCategory([]); 
-    }
-  };
-
-  const handleCategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selectedValue = event.target.value;
-    if (selectedValue) {
-      router.push(`/c/${selectedValue}`);
-    }
-  };
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  return (
-    <SessionProvider>
-      <nav className="flex items-center justify-between bg-green-900 p-4">
-        <Link href="/" className="flex items-center text-2xl font-bold">
-          <img
-            src="/hmif-logo.svg"
-            alt="Logo HMIF"
-            className="w-8 h-auto mr-2"
-          />
-          HMIFess
+  return session ? (
+    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-4/5 bg-white z-50">
+      <div className="p-6 md:h-1/5">
+        <Link href="/">
+          <h1 className="pl-6 text-2xl font-bold text-black">HMIFess</h1>
         </Link>
-
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center justify-between h-8">
-            <select
-              name="Category"
-              title="Select a category" 
-              className="basic-single-select px-3 py-2 rounded-md border border-gray-300 bg-white shadow-sm"
-              onChange={handleCategoryChange}
-            >
-              <option value="">Select Category</option>
-              {categoryToOptions().map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {session?.user ? (
-            <div className="relative inline-block text-left">
-              <button
-                className="flex items-center space-x-2 focus:outline-none"
-                onClick={toggleDropdown}
-              >
-                <img
-                  src={session.user.image || "/default-profile.png"}
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full"
-                />
-                <span className="text-white">{session.user.name}</span>
-              </button>
-
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                  <Link
-                    href={`/profile`}
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    href="/api/auth/signout"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  >
-                    Sign Out
-                  </Link>
-                </div>
-              )}
-            </div>
-          ) : (
-            <LoginBtn />
-          )}
+      </div>
+      <nav className="flex flex-col flex-shrink-0 justify-between h-full overflow-y-auto">
+        <ul className="hidden md:block mx-6">
+          <li>
+            <Link href="/" className="md:flex items-center px-6 py-2 rounded-3xl text-gray-700 hover:bg-gray-200 transition-colors duration-100">
+                <HomeIcon className="w-6 h-6 mr-3" />
+                Home
+            </Link>
+          </li>
+          <li>
+            <Link href="/profile" className="md:flex items-center px-6 py-2 rounded-3xl text-gray-700 hover:bg-gray-200 transition-colors duration-100">
+                <UserIcon className="w-6 h-6 mr-3" />
+                Profile
+            </Link>
+          </li>
+        </ul>
+        <div className="pt-4 pr-8 md:pr-0 mx-6 m">
+          <DisplayName />
         </div>
       </nav>
-    </SessionProvider>
-  );
+    </div>
+  )
+  : null;
 }
