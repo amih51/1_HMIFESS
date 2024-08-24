@@ -31,7 +31,7 @@ export default function Landing() {
   };
 
   return (
-    <main className="flex items-center justify-center h-screen">
+    <main className="flex items-center justify-center h-screen z-10">
       <div className="grid grid-cols-2 w-full h-full relative">
         <img 
           src="hmif-logo.svg" 
