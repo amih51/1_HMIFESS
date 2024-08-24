@@ -6,16 +6,17 @@ const prisma = new PrismaClient();
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === "GET") {
         try {
-            const { postId, userId } = req.query;
+            const { postId, commentId, userId } = req.query;
 
-            if (typeof postId !== "string" || typeof userId !== "string") {
+            if (typeof userId !== "string" || (!postId && !commentId)) {
                 return res.status(400).json({ error: "Invalid parameters" });
             }
 
             const vote = await prisma.vote.findFirst({
                 where: {
-                    postId,
                     userId,
+                    postId: typeof postId === "string" ? postId : undefined,
+                    commentId: typeof commentId === "string" ? commentId : undefined,
                 },
             });
 

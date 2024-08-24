@@ -6,22 +6,30 @@ const prisma = new PrismaClient();
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === "POST") {
         try {
-            const { postId, userId, voteType } = req.body;
+            const { postId, commentId, userId, voteType } = req.body;
+
+            // Determine if the vote is for a post or a comment
+            const voteTarget = postId ? { postId } : { commentId };
 
             // Check if the user has already voted
             const existingVote = await prisma.vote.findFirst({
                 where: {
-                    postId,
+                    ...voteTarget,
                     userId,
                 },
             });
 
-            // Get current vote count
-            const post = await prisma.post.findUnique({
-                where: {
-                    id: postId,
-                },
-            });
+            // Determine if it's a post or a comment and get the current vote count
+            let target, newVoteCount;
+            if (postId) {
+                target = await prisma.post.findUnique({ where: { id: postId } });
+            } else if (commentId) {
+                target = await prisma.comment.findUnique({ where: { id: commentId } });
+            }
+
+            if (!target) {
+                return res.status(404).json({ error: "Target not found" });
+            }
 
             if (existingVote) {
                 if (existingVote.voteType === voteType) {
@@ -32,19 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         },
                     });
 
-                    if (post) {
-                        const newVoteCount = post.voteCount - (voteType ? 1 : -1);
-                        
-                        // Update post's vote count
-                        await prisma.post.update({
-                            where: {
-                                id: postId,
-                            },
-                            data: {
-                                voteCount: newVoteCount,
-                            },
-                        });
-                    }
+                    newVoteCount = target.voteCount - (voteType ? 1 : -1);
                 } else {
                     // Update vote type
                     await prisma.vote.update({
@@ -56,43 +52,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         },
                     });
 
-                    if (post) {
-                        const newVoteCount = post.voteCount + 2 * (voteType ? 1 : -1);
-                        
-                        // Update post's vote count
-                        await prisma.post.update({
-                            where: {
-                                id: postId,
-                            },
-                            data: {
-                                voteCount: newVoteCount,
-                            },
-                        });
-                    }
+                    newVoteCount = target.voteCount + 2 * (voteType ? 1 : -1);
                 }
             } else {
                 // Create new vote
                 await prisma.vote.create({
                     data: {
-                        postId,
+                        ...voteTarget,
                         userId,
                         voteType,
                     },
                 });
 
-                if (post) {
-                    const newVoteCount = post.voteCount + (voteType ? 1 : -1);
-                    
-                    // Update post's vote count
-                    await prisma.post.update({
-                        where: {
-                            id: postId,
-                        },
-                        data: {
-                            voteCount: newVoteCount,
-                        },
-                    });
-                }
+                newVoteCount = target.voteCount + (voteType ? 1 : -1);
+            }
+
+            // Update the target's vote count
+            if (postId) {
+                await prisma.post.update({
+                    where: { id: postId },
+                    data: { voteCount: newVoteCount },
+                });
+            } else if (commentId) {
+                await prisma.comment.update({
+                    where: { id: commentId },
+                    data: { voteCount: newVoteCount },
+                });
             }
 
             res.status(200).json({ message: "Vote processed successfully" });
