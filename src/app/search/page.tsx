@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import DisplayPost from "@/components/display-post";
 import LoaderBar from "@/components/loader-bar";
+import SelectCategory from "@/components/select-category";
+import SearchBar from "@/components/search-bar";
 
 interface Post {
   id: string;
@@ -38,7 +40,19 @@ const SearchResults: React.FC = () => {
     post.body.toLowerCase().includes(q.toLowerCase())
   );
 
-  return <DisplayPost posts={filteredPosts} />;
+  return (
+    <div className="bg-white">
+      <main className="p-7 flex flex-col min-h-screen">
+      {/*Upper Part*/}
+        <div className="flex flex-row place-items-center">
+          <div className="hidden md:block font-sans font-bold text-2xl">Hasil: {q}</div>
+          <SelectCategory/>
+        </div>
+        <SearchBar />
+        <DisplayPost posts={filteredPosts} />
+      </main>
+    </div>
+  );
 };
 
 const SearchPage: React.FC = () => (
