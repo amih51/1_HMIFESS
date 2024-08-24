@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoginBtn from "./login-btn";
-
+import SearchBar from "@/components/search-bar"
 type OptionType = {
   value: string;
   label: string;
@@ -74,6 +74,7 @@ export default function Nav() {
 
         <div className="flex items-center space-x-4">
           <div className="flex items-center justify-between h-8">
+
             <select
               name="Category"
               title="Select a category" 
@@ -88,7 +89,10 @@ export default function Nav() {
               ))}
             </select>
           </div>
-
+              {/*make a space for search bar*/}
+          <div>
+            <SearchBar />
+          </div>
           {session?.user ? (
             <div className="relative inline-block text-left">
               <button
