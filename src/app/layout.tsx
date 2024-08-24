@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Providers from "./providers";
-import NavWrapper from "@/components/nav-wrapper";
+import Providers from "../components/providers";
+import Nav from "@/components/nav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,8 +24,10 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-backgroundLogo">
         <Providers>
-          <NavWrapper />
-          {children}
+          <div className="flex flex-col md:flex-row min-h-screen">
+            <Nav />
+            <main className="flex-1 bg-gray-100 pt-16 md:pt-0 md:pl-64">{children}</main>
+          </div>
         </Providers>
       </body>
     </html>
