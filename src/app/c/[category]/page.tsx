@@ -18,14 +18,11 @@ export default async function Page({ params }: { params: { category: string } })
         <main className="bg-white p-7 flex flex-col min-h-screen">
         {/*Upper Part*/}
             <div className="flex flex-row place-items-center">
-                <div className="font-sans font-bold text-4xl">Beranda</div>
-                <div className="mr-1 ml-4 px-3 py-1 text-xs rounded-full border-2 border-yellow-500 place-content-center mt-2">
-                category: {params.category}
-                </div>
-                <div><SelectCategory/></div>
+                <div className="font-sans font-bold text-2xl">category: {params.category}</div>
+                <SelectCategory/>
             </div>
             <SearchBar/>
-            
+
         {/*Content*/}
             <div className="items-center ">
                 <CreatePost category={params.category} />
