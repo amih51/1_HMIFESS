@@ -45,7 +45,9 @@ const SearchResults: React.FC = () => {
       <main className="p-7 flex flex-col min-h-screen">
         {/* Upper Part */}
         <div className="flex flex-row place-items-center">
-          <div className="hidden md:block font-sans font-bold text-4xl">Result for "{q}"</div>
+          <div className="hidden md:block font-sans font-bold text-4xl">
+            Result for &quot;{q}&quot;
+          </div>
           <SelectCategory />
         </div>
         <SearchBar />
@@ -54,7 +56,7 @@ const SearchResults: React.FC = () => {
           <DisplayPost posts={filteredPosts} />
         ) : (
           <div className="text-center mt-10">
-            <p className="text-gray-500">No results found for "{q}".</p>
+            <p className="text-gray-500">No results found for &quot;{q}&quot;.</p>
           </div>
         )}
       </main>
