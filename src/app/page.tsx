@@ -13,14 +13,12 @@ export default async function Home() {
     );
   }
   return (
-    <div className="md:pl-64">
-      <main className="min-h-screen bg-colorLogo">
-          <div className="items-center font-mono">
-              <h1 className="text-5xl">Semua kategori</h1>
-              <SelectCategory />
-              <AllPosts />
-          </div>
-      </main>
-    </div>
+    <main className="min-h-screen bg-colorLogo">
+        <div className="items-center font-mono">
+            <h1 className="text-5xl">Semua kategori</h1>
+            <SelectCategory />
+            <AllPosts />
+        </div>
+    </main>
   );
 }
