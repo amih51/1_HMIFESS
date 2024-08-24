@@ -5,6 +5,7 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { HomeIcon, UserIcon } from "@heroicons/react/24/outline";
 import DisplayName from "./display-name";
+import CreatePostButton from "./create-post-btn";
 
 export default function Nav() {
   const { data: session } = useSession();
@@ -12,11 +13,14 @@ export default function Nav() {
   if (!session?.user ) return null;
 
   return (
-    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white">
+    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white border-r-2">
       <div className="p-6 mx-6 md:h-1/5 md:pt-16">
         <Link href="/">
           <img src="hmifess-logo.svg" alt="Logo HMIFess" className="w-32"/>
         </Link>
+      </div>
+      <div className="md:hidden">
+        <CreatePostButton />
       </div>
       <nav className="flex flex-col flex-shrink-0 justify-between h-3/4 overflow-y-auto bg-white">
         <ul className="hidden md:block mx-6">
@@ -31,6 +35,9 @@ export default function Nav() {
                 <UserIcon className="w-6 h-6 mr-3" />
                 Profile
             </Link>
+          </li>
+          <li className="visible">
+            <CreatePostButton />
           </li>
         </ul>
         <div className="pt-2 pr-8 md:pr-0 mx-6">
