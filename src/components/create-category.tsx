@@ -32,7 +32,7 @@ export default function CreateCategory() {
   return (
     <div className='bg-white'>
       <Popup trigger=
-                {<button className='m-2 mt-4 text-xs rounded-full bg-green-700 text-white py-1.5 px-3 hover:text-black hover:bg-white hover:border-2 hover:border-green-700 place-content-center'>
+                {<button className='m-2 mt-4 text-xs rounded-lg bg-green-700 text-white py-1.5 px-3 hover:text-black hover:bg-white hover:border-2 hover:border-green-700 place-content-center'>
                   Create New Category </button>}
                 position="right center">
                 <form onSubmit={handleSubmit}>

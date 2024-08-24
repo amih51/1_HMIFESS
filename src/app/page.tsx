@@ -3,6 +3,7 @@ import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import AllPosts from "@/components/home";
 import Landing from "@/components/landing-page";
 import SelectCategory from "@/components/select-category";
+import CreateCategory from "@/components/create-category";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -18,9 +19,10 @@ export default async function Home() {
       {/*Upper Part*/}
         <div className="flex flex-row place-items-center">
           <div className="font-sans font-bold text-4xl">Beranda</div>
-          <div className="mr-1 ml-4 px-3 py-1 text-xs rounded-full border-2 border-yellow-500 place-content-center mt-2">semua kategori</div>
+          <div className="mr-1 ml-4 px-3 py-1 text-xs rounded-lg border-2 border-yellow-500 place-content-center mt-2">semua kategori</div>
           {/*Select Category*/}
           <div><SelectCategory/></div>
+          <div><CreateCategory/></div>
         </div>
       {/*Search Bar*/}
         <button className="flex flex-row font-sans mt-3 p-2 border-2 bg-gray-200 rounded-lg place-items-center">
