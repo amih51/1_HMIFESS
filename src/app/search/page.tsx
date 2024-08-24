@@ -1,7 +1,6 @@
-// app/search/page.tsx
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import DisplayPost from "@/components/display-post";
@@ -39,9 +38,13 @@ const SearchResults: React.FC = () => {
     post.body.toLowerCase().includes(q.toLowerCase())
   );
 
-  return (
-    <DisplayPost posts={filteredPosts} />
-  );
+  return <DisplayPost posts={filteredPosts} />;
 };
 
-export default SearchResults;
+const SearchPage: React.FC = () => (
+  <Suspense fallback={<LoaderBar />}>
+    <SearchResults />
+  </Suspense>
+);
+
+export default SearchPage;
