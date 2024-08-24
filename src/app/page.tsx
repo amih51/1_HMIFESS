@@ -1,11 +1,8 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import CreateCategory from "@/components/create-category";
 import AllPosts from "@/components/home";
 import Landing from "@/components/landing-page";
-import Nav from "@/components/nav";
 import SelectCategory from "@/components/select-category";
-
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -17,7 +14,6 @@ export default async function Home() {
   }
   return (
     <div className="bg-white">
-      <Nav />
       <main className="p-7 flex flex-col min-h-screen">
       {/*Upper Part*/}
         <div className="flex flex-row place-items-center">
@@ -25,8 +21,6 @@ export default async function Home() {
           <div className="mr-1 ml-4 px-3 py-1 text-xs rounded-full border-2 border-yellow-500 place-content-center mt-2">semua kategori</div>
           {/*Select Category*/}
           <div><SelectCategory/></div>
-          {/*Create Category*/}
-          <div><CreateCategory/></div>
         </div>
       {/*Search Bar*/}
         <button className="flex flex-row font-sans mt-3 p-2 border-2 bg-gray-200 rounded-lg place-items-center">
