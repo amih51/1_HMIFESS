@@ -101,10 +101,6 @@ const Profile = () => {
       {
         id: "balasan",
         content: "balasan di sini"
-      },
-      {
-        id: "riwayat",
-        content: "riwayat di sini"
       }
     ]
     
@@ -114,12 +110,7 @@ const Profile = () => {
         <div className="container mx-auto p-6">
           {/*Upper Part*/}
             <div className='flex flex-row place-items-center'>
-              <div className='ml-5'>
-                <button className='p-2 bg-green-800 rounded-md hover:bg-opacity-70 '> 
-                  <ArrowLeftIcon className='h-5 w-5 text-white'/>
-                </button>
-              </div>
-              <div className='ml-6 font-extrabold text-4xl text-black'>
+              <div className='ml-6 font-bold text-4xl text-black'>
                 Profile
               </div>
             </div>
@@ -137,7 +128,7 @@ const Profile = () => {
                     </ul>
 
               {/*Update Profile*/}
-                    <div className="mt-4 flex items-center">
+                    <form onSubmit={handleNameChange} className="mt-4 flex items-center">
                         <input
                             type="text"
                             value={newName}
@@ -145,18 +136,12 @@ const Profile = () => {
                             placeholder="Enter new name"
                             className="border p-2 rounded-md mr-2"
                             />
-                        <button
-                            onClick={handleNameChange}
-                            className="bg-yellow-500 text-black text-sm px-3 py-2 rounded-md"
-                            >
-                            Update Name
-                        </button>
-                    </div>
+                    </form>
                 </div>
             </div>
 
     {/*Tab Menu*/}  
-          <div className="m-3 ml-5 bg-green-800 rounded-2xl flex flex-row place-content-evenly">
+            <div className="m-3 ml-5 bg-transparent flex flex-row border-b-2">
             <TabButton
               selectTab={()=> handleTabChange("postingan")}
               active={tab === "postingan"}>
@@ -166,11 +151,6 @@ const Profile = () => {
               selectTab={()=> handleTabChange("balasan")}
               active={tab === "balasan"}>
               Balasan
-            </TabButton>
-            <TabButton
-              selectTab={()=> handleTabChange("riwayat")}
-              active={tab === "riwayat"}>
-              Riwayat
             </TabButton>
           </div>
           <div className='relative mt-5 ml-5 m-3 w-auto text-black'>

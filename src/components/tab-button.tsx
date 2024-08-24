@@ -13,8 +13,8 @@ type TabButtonProps = {
  */
 const TabButton = ({ active, selectTab, children }: TabButtonProps): JSX.Element => {
   const buttonClasses = active
-    ? "text-white border-b-2 border-white px-5 py-2"
-    : "text-white text-opacity-50 px-5 py-2";
+    ? "text-black border-b-2 border-black px-5 py-2"
+    : "text-black text-opacity-50 px-5 py-2";
 
   return (
     <button
