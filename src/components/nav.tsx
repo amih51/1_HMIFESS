@@ -7,9 +7,9 @@ import { HomeIcon, UserIcon } from "@heroicons/react/24/outline";
 import DisplayName from "./display-name";
 
 export default function Nav() {
-  const session = useSession();
+  const { data: session } = useSession();
 
-  if (!session) return null;
+  if (!session?.user ) return null;
 
   return (
     <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white">

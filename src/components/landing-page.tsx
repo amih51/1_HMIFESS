@@ -17,21 +17,8 @@ export default function Landing() {
     }
   }, [searchParams]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const res = await signIn('credentials', {
-      redirect: false,
-      email: e.currentTarget.email.value,
-      password: e.currentTarget.password.value,
-    });
-
-    if (res?.error) {
-      setError(res.error);
-    }
-  };
-
   return (
-    <main className="flex items-center justify-center h-screen -mt-16 md:mt-0 md:-ml-64">
+    <main className="flex items-center justify-center min-h-screen -mt-16 md:mt-0 md:-ml-64 z-10">
       <div className="grid grid-rows-[auto_1fr] md:grid-cols-2 md:grid-rows-1 w-full h-full">
         <div className="relative h-32 md:h-full w-full">
           <img 
@@ -46,7 +33,7 @@ export default function Landing() {
           />
         </div>
         <div className="flex items-center justify-center bg-white p-8">
-          <div className="p-4">
+          <div className="p-2 md:p-4">
             <h1 className="text-5xl font-bold mb-4">Your Space, Your Voice.</h1>
             <h2 className="text-2xl font-semibold mb-8">HMIFess: Where HMIF Students Connect & Share</h2>
             <p className="text-lg text-gray-600 text-justify">
