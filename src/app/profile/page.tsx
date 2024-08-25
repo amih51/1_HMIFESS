@@ -139,13 +139,13 @@ const Profile = () => {
     return (
       <div className="bg-white">
         <main className="p-7 flex flex-col min-h-screen">
-          {/*Upper Part*/}
+
             <div className='flex flex-row place-items-center'>
               <div className='font-sans font-bold text-4xl'>
                 Profile
               </div>
             </div>
-            {/*Profile Data*/}
+
             <div className="flex items-center py-6 bg-white">
               <Image
                 src={session?.user?.image || "/default-avatar.png"}
@@ -172,7 +172,6 @@ const Profile = () => {
             </div>
           </div>
 
-          {/*Tab Menu*/}  
           <div className="bg-transparent flex flex-row border-b-2">
             <TabButton
               selectTab={()=> handleTabChange("postingan")}

@@ -9,19 +9,19 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
   
   if (!session) {
-    return (
-      <Landing />
-    );
+    return <Landing />;
   }
+  
   return (
     <div className="bg-white">
       <main className="p-7 flex flex-col min-h-screen">
-      {/*Upper Part*/}
-        <div className="flex flex-row place-items-center">
+        <div className="header-bg flex flex-row place-items-center">
           <div className="font-sans font-bold text-4xl">Beranda</div>
-          <SelectCategory/>
+          <SelectCategory />
         </div>
-        <SearchBar />
+        <div className="search-bar-wrapper">
+          <SearchBar />
+        </div>
         <div className="pt-6">
           <AllPosts />
         </div>

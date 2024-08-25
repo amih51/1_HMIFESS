@@ -82,14 +82,12 @@ const Profile = ({ params }: { params: { id: string } }) => {
     return (
         <div className="bg-white">
             <main className="p-7 flex flex-col min-h-screen">
-                {/*Upper Part*/}
                 <div className='flex flex-row place-items-center'>
                     <div className='font-sans font-bold text-4xl'>
                         Profile
                     </div>
                 </div>
-                {/*Profile Data*/}
-                <div className="flex items-center py-6 bg-white">
+                <div className="profile-bg flex items-center py-6">
                     <Image
                         src={user.image || "/default-avatar.png"}
                         alt="Profile Picture"
@@ -108,8 +106,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                         </div>
                     </div>
                 </div>
-
-                {/*Tab Menu*/}
+                
                 <div className="bg-transparent flex flex-row border-b-2">
                     <TabButton
                         selectTab={() => handleTabChange("postingan")}
