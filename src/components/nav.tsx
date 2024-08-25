@@ -15,14 +15,15 @@ export default function Nav() {
   if (!session?.user ) return null;
 
   return (
-    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white border-r-2">
-      <div className="p-6 mx-6 md:h-1/5 md:pt-16">
+    <div className="fixed flex items-center justify-between md:block top-0 left-0 w-full md:w-64 h-16 md:h-screen bg-white border-b-2 md:border-r-2 z-50">
+      <div className="p-6 md:mx-6 md:h-1/5 md:pt-16">
         <Link href="/">
           <Image
             src="/hmifess-logo.svg"
             alt="Logo HMIFess"
             width={240}
             height={120}
+            className="-translate-x-3 md:translate-x-0"
           />
         </Link>
       </div>
@@ -47,7 +48,7 @@ export default function Nav() {
             <CreatePostButton />
           </li>
         </ul>
-        <div className="pt-2 pr-8 md:pr-0 mx-6">
+        <div className="pt-2 pr-1 md:pr-0 mx-6">
           <DisplayName />
         </div>
       </nav>
