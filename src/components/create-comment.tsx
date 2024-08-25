@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 interface CreateCommentProps {
   postId: string;
@@ -45,9 +46,15 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
 
   return (
     <form onSubmit={handleSubmit} className='flex flex-row mt-4 mb-8'>
-
+      <Image 
+        src={session.user?.image || 'hmif-logo-p.png'} 
+        alt='Profile Photo' 
+        width={32}
+        height={32}
+        className="w-8 h-8 rounded-full"
+      />
       {/*Comment Box*/}
-      <textarea className='w-full bg-white rounded-xl px-5 py-3 ml-5'
+      <textarea className='w-full bg-gray-100 rounded-xl px-5 py-3 ml-5'
         value={body}
         onChange={(e) => setBody(e.target.value)}
         placeholder="Tambahkan Komentar"

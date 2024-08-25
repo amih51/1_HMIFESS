@@ -18,6 +18,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             include: {
                 user: true,  
             },
+            orderBy: {
+                createdAt: 'desc', 
+            },
         });
 
         res.status(200).json(comments);

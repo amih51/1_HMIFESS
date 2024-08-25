@@ -45,7 +45,7 @@ export default function DisplayName() {
       
       <button onClick={toggleDropdown} className="flex items-center space-x-4 w-full">
         <Image
-          src={imageUrl || 'default-profile.png'}
+          src={imageUrl || 'hmif-logo-p.png'}
           alt={name || 'warga biasa'}
           width={32}
           height={32}
