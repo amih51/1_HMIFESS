@@ -13,6 +13,7 @@ interface Comment {
     name: string;
   };
   isAnon: boolean;
+  reported: boolean;
 }
 
 interface CommentsProps {
@@ -36,6 +37,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
         <div key={comment.id} className='bg-white m-4 rounded-xl px-4 py-2'>
           <small className='text-gray-500'>{comment.isAnon ? 'Anonymous' : comment.user.name}</small>
           <p>{comment.body}</p>
+          {comment.reported && <small className="text-red-500">Reported</small>}
         </div>
       ))}
       
