@@ -51,12 +51,27 @@ const Profile = ({ params }: { params: { id: string } }) => {
     if (categoriesError) return <div>Failed to load categories.</div>;
     if (!user || !posts || !categories) return <LoaderBar />;
 
-    const filteredPosts = posts.filter((post: any) => post.user.id === user.id && !post.isAnon);
+    const userPost = posts.filter((post: any) => post.user.id === user.id && !post.isAnon);
+
+    const postCount = userPost.length;
+
+    const commentCount = posts.reduce((total: number, post: any) => {
+      if (Array.isArray(post.comments)) {
+        return total + post.comments.filter((comment: any) => comment.userId === user.id).length;
+      }
+      return total;
+    }, 0);
+
+    const upvotePosts = posts
+      .filter((post: any) => 
+        Array.isArray(post.votes) && post.votes.some((vote: any) => 
+          vote.userId === user.id && vote.voteType)
+    );
 
     const profile_tab = [
         {
             id: "postingan",
-            content: <DisplayPost posts={filteredPosts} />,
+            content: <DisplayPost posts={userPost} />,
         },
         {
             id: "balasan",
@@ -88,8 +103,8 @@ const Profile = ({ params }: { params: { id: string } }) => {
                         </div>
                         <p className="text-gray-400 text-sm">Email: {user.email}</p>
                         <div className="flex flex-row text-gray-500">
-                            <div><span className="font-semibold text-black">xx</span> menfess</div>
-                            <div className="px-6"><span className="font-semibold text-black">xx</span> komentar</div>
+                            <div><span className="font-semibold text-black">{postCount}</span> menfess</div>
+                            <div className="px-6"><span className="font-semibold text-black">{commentCount}</span> komentar</div>
                         </div>
                     </div>
                 </div>

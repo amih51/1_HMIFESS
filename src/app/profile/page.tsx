@@ -91,18 +91,49 @@ const Profile = () => {
     if (categoriesError) return <div>Failed to load categories.</div>;
     if (!user || !posts || !categories) return <LoaderBar />;
 
-    const filteredPosts = posts
+    const userPost = posts
       .filter((post: any) => post.user.id === user.id)
 
+    const postCount = userPost.length;
+
+    const commentCount = posts.reduce((total: number, post: any) => {
+      if (Array.isArray(post.comments)) {
+        return total + post.comments.filter((comment: any) => comment.userId === user.id).length;
+      }
+      return total;
+    }, 0);
+
+    const upvotePosts = posts
+      .filter((post: any) => 
+        Array.isArray(post.votes) && post.votes.some((vote: any) => 
+          vote.userId === user.id && vote.voteType)
+    );
+    
     const profile_tab =
       [
         {id: "postingan",
-        content: <DisplayPost posts={filteredPosts}/>,
+        content: userPost.length > 0 ? (
+          <DisplayPost posts={userPost} />
+        ) : (
+          <p>No upvoted posts.</p>
+        ),
       },
       {
-        id: "balasan",
-        content: "balasan di sini"
-      }
+        id: "komentar",
+        content: <p>komentar di sini</p>
+      },
+      {
+        id: "upvoted",
+        content: upvotePosts.length > 0 ? (
+          <DisplayPost posts={upvotePosts} />
+        ) : (
+          <p>No upvoted posts.</p>
+        ),
+      },
+      {
+        id: "downvoted",
+        content: "downvote di sini"
+      },
     ]
     
     return (
@@ -129,15 +160,14 @@ const Profile = () => {
                   type="text"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
-                  placeholder="Enter new name"
-                  className="flex-grow text-2xl font-semibold w-32 focus:outline-none"
+                  className="text-2xl font-semibold w-60 focus:outline-none"
                 />
                 <PencilIcon className="w-2 h-2"/>
               </form>
               <p className="text-gray-400 text-sm">Email: {session?.user?.email}</p>
               <div className="flex felx-row text-gray-500">
-                <div><span className="font-semibold text-black">xx</span> menfess</div>
-                <div className="px-6"><span className="font-semibold text-black">xx</span> komentar</div>
+                <div><span className="font-semibold text-black">{postCount}</span> menfess</div>
+                <div className="px-6"><span className="font-semibold text-black">{commentCount}</span> komentar</div>
               </div>
             </div>
           </div>
@@ -150,9 +180,19 @@ const Profile = () => {
               Menfess
             </TabButton>
             <TabButton
-              selectTab={()=> handleTabChange("balasan")}
-              active={tab === "balasan"}>
-              Balasan
+              selectTab={()=> handleTabChange("komentar")}
+              active={tab === "komentar"}>
+              Komentar
+            </TabButton>
+            <TabButton
+              selectTab={()=> handleTabChange("upvoted")}
+              active={tab === "upvoted"}>
+              Upvoted
+            </TabButton>
+            <TabButton
+              selectTab={()=> handleTabChange("downvoted")}
+              active={tab === "downvoted"}>
+              Downvoted
             </TabButton>
           </div>
           <div className='relative w-auto text-black'>
