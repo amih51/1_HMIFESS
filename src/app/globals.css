@@ -28,7 +28,25 @@
       --logo-color: #2E7348; */
     }
   
+    .header-bg {
+      background: radial-gradient(circle, #549B68 65%, #05130A 140%, #E6B544 65%);
+      padding: 20px;
+    }
     
+    .logo-wrapper {
+      background: radial-gradient(ellipse at center,#E6B544 50%, #05130A 100%);
+      padding: 18px;
+      border-radius: 60%; 
+      display: inline-block;
+    }
+    
+    .search-bar-wrapper {
+      background: radial-gradient(circle, #549B68 65%,#05130A  140%,#E6B544 65%);
+      padding: 20px; 
+      border-radius: 0px; 
+    }
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -51,16 +69,7 @@
   animation: loading 2s infinite;
 }
 
-.header-bg {
-  background: radial-gradient(circle, #549B68 65%, #05130A 140%, #E6B544 65%);
-  padding: 20px;
-}
 
-.search-bar-wrapper {
-  background: radial-gradient(circle, #549B68 65%, #05130A 140%, #E6B544 65%);
-  padding: 20px; 
-  border-radius: 0px; 
-}
 
 
 

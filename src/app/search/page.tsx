@@ -43,14 +43,17 @@ const SearchResults: React.FC = () => {
   return (
     <div className="bg-white">
       <main className="p-7 flex flex-col min-h-screen">
-        {/* Upper Part */}
-        <div className="flex flex-row place-items-center">
+        {/* Upper Part with Gradient Background */}
+        <div className="header-bg flex flex-row place-items-center">
           <div className="hidden md:block font-sans font-bold text-4xl">
             Result for &quot;{q}&quot;
           </div>
           <SelectCategory />
         </div>
-        <SearchBar />
+        {/* Search Bar with Gradient Background */}
+        <div className="search-bar-wrapper">
+          <SearchBar />
+        </div>
 
         {filteredPosts.length > 0 ? (
           <div className="pt-6">
