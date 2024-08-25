@@ -51,7 +51,7 @@ model User {
   joinedCategories   Category[] @relation("CategoryMembers")
   Account            Account[]
   Session            Session[]
-
+  bookmarkedPosts    Post[]    @relation("BookmarkedPosts")
   @@map(name: "users")
 }
 
@@ -69,6 +69,7 @@ model Post {
   isAnon             Boolean
   votes              Vote[]
   voteCount          Int       @default(0)
+  bookmarkedBy       User[]    @relation("BookmarkedPosts")
 }
 
 model Category {

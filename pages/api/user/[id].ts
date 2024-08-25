@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             include: {
                 posts: true,
                 comments: true,
+                bookmarkedPosts: true,
             },
         });
 

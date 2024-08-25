@@ -1,10 +1,11 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import VoteBtn from "./vote-btn";
 import LoaderBar from "./loader-bar"; 
 import Image from "next/image";
 import { ChatBubbleOvalLeftIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-
+import { useState } from "react";
 interface Post {
   id: string;
   isAnon: boolean;
@@ -22,11 +23,13 @@ interface Post {
   updatedAt: string;
 }
 
-interface DisplayPostProps {
-  posts: Post[];
+interface DisplayPostProps {  
+  posts: Post[];  
+  onBookmark: (postId: string, bookmark: boolean) => Promise<void>;
+  isBookmarked: boolean;
 }
 
-const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
+const DisplayPost: React.FC<DisplayPostProps> = ({ posts, onBookmark, isBookmarked }) => {
   if (!posts || posts.length === 0) {
     return <LoaderBar />; 
   }
@@ -34,6 +37,17 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
   const imageStyle = {
     borderRadius: '50%',
   };
+  const [bookmarked, setBookmarked] = useState(isBookmarked);
+
+  const handleBookmark = async ({ post }: { post: Post }) => {
+    try {
+      await onBookmark(post.id, !bookmarked);
+      setBookmarked(!bookmarked);
+    } catch (error) {
+      console.error('Error bookmarking post:', error);
+    }
+  };
+
 
   return (
     <ul>
@@ -82,6 +96,13 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
             </div>
             {/*Comments*/}
             {/* <Comments postId={post.id} /> */}
+            {/*Bookmark*/}
+            <button
+              onClick={() => handleBookmark({ post })}
+              className="ml-5 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-full"
+            >
+              {bookmarked ? "Bookmarked" : "Bookmark"}
+            </button>
           </li>
         </Link>
       ))}
