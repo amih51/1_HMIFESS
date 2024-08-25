@@ -4,6 +4,7 @@ import VoteBtn from "./vote-btn";
 import LoaderBar from "./loader-bar"; 
 import Image from "next/image";
 import { ChatBubbleOvalLeftIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import Comments from "./comments";
 
 interface Post {
   id: string;
@@ -82,7 +83,7 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
               </button>
             </div>
             {/*Comments*/}
-            {/* <Comments postId={post.id} /> */}
+            <Comments postId={post.id} />
           </li>
       ))}
     </ul>
