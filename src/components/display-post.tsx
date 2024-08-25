@@ -38,8 +38,8 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
   return (
     <ul>
       {posts.map((post) => (
-        <Link key={post.id} href={`/m/${post.id}`}>
-          <li className='border-b-2 border-gray-500 py-3'>
+          <li key={post.id}  className='border-b-2 border-gray-500 py-3'>
+            <Link href={`/m/${post.id}`}>
             {/*Username or Anonymous & Profile Image*/}
             <div className="flex flex-row font-bold place-items-center">
               {post.isAnon ? (
@@ -73,6 +73,7 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
             <div className="my-2">
               {post.body}
             </div>
+            </Link>
             {/*Up Vote - Down Vote, Count Vote, & Comment*/}
             <div className="flex flex-row place-items-center">
               <VoteBtn postId={post.id} userId={post.user.id} />
@@ -83,7 +84,6 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
             {/*Comments*/}
             {/* <Comments postId={post.id} /> */}
           </li>
-        </Link>
       ))}
     </ul>
   );

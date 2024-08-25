@@ -1,12 +1,7 @@
-"use client";
-
 import useSWR from 'swr';
-import { fetcher } from '@/lib/fetcher';
-import { useState } from 'react';
-import LoaderBar from './loader-bar';
-import { HandThumbUpIcon, HandThumbDownIcon, ChatBubbleOvalLeftIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect } from 'react';
+import { ArrowDownCircleIcon, ArrowUpCircleIcon } from '@heroicons/react/24/outline';
 
-type VoteType = boolean; 
 type VoteStatus = "none" | "upvoted" | "downvoted";
 
 interface VoteBtnProps {
@@ -14,17 +9,40 @@ interface VoteBtnProps {
     userId: string;
 }
 
+const postFetcher = async (url: string, postId: string, userId: string) => {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ postId, userId }),
+    });
+  
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+  
+    return response.json();
+};
+
 const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
-    const { data: voteData, error: voteError } = useSWR(`/api/vote/vote-status?postId=${postId}&userId=${userId}`, fetcher);
-    const { data: postData, error: postError } = useSWR(`/api/post/${postId}`, fetcher);
+    const { data: vote, mutate: mutate, error: error } = useSWR(
+        postId && userId ? ['/api/vote/vote-state', postId, userId] : null,
+        ([url, postId, userId]) => postFetcher(url, postId, userId)
+    );
 
-    const [voteStatus, setVoteStatus] = useState<VoteStatus>(voteData?.voteType ? "upvoted" : voteData?.voteType === false ? "downvoted" : "none");
-    const [voteCount, setVoteCount] = useState<number>(postData?.voteCount || 0);
+    const [voteStatus, setVoteStatus] = useState<VoteStatus>("none");
+    const [voteCount, setVoteCount] = useState<number>(0);
 
-    if (voteError || postError) return <div>Failed to load vote data.</div>;
-    if (!voteData || !postData) return <LoaderBar />;
+    useEffect(() => {
+        if (vote) {
+            setVoteStatus(vote ? (vote.voteType ? "upvoted" : "downvoted") : "none");
+            setVoteCount(vote.voteCount);
+        }
+    }, [vote]);
 
-    const handleVote = async (type: VoteType) => {
+    const handleVote = async (type: boolean) => {
         try {
             const res = await fetch("/api/vote/vote", {
                 method: "POST",
@@ -39,11 +57,13 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
             });
 
             if (res.ok) {
-                setVoteStatus(voteStatus === (type ? "upvoted" : "downvoted") ? "none" : (type ? "upvoted" : "downvoted"));
+                const result = await res.json();
+                setVoteStatus(result.voteStatus);
+                setVoteCount(result.voteCount);
 
-                const updatedCountRes = await fetch(`/api/post/${postId}`);
-                const { voteCount } = await updatedCountRes.json();
-                setVoteCount(voteCount);
+                mutate();
+            } else {
+                console.error(`Failed to process vote: ${res.statusText}`);
             }
         } catch (error) {
             console.error("Failed to process vote:", error);
@@ -51,27 +71,25 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
     };
 
     return (
-        <>
         <div className='flex flex-row place-items-center'>
-            <div>
-                <button className='bg-gray-300 px-4 py-2 rounded-l-full hover:bg-gray-400'
+            <div className='flex flex-row'>
+                <button className='bg-gray-300 pl-4 pr-2 py-2 rounded-l-full hover:bg-gray-400'
                     onClick={() => handleVote(true)} 
                     style={{ color: voteStatus === "upvoted" ? "blue" : "black" }}
                 >
-                    <HandThumbUpIcon className='w-5 h-5'/>
+                    <ArrowUpCircleIcon className='w-5 h-5'/>
                 </button>
-                <button className='bg-gray-300 px-4 py-2 rounded-r-full hover:bg-gray-400'
+                <div className='bg-gray-300 px-2 py-2'>
+                    {voteCount}
+                </div> 
+                <button className='bg-gray-300 pl-2 pr-4 py-2 rounded-r-full hover:bg-gray-400'
                     onClick={() => handleVote(false)} 
                     style={{ color: voteStatus === "downvoted" ? "red" : "black" }}
                 >
-                    <HandThumbDownIcon className='w-5 h-5'/>
+                    <ArrowDownCircleIcon className='w-5 h-5'/>
                 </button>
             </div>
-            <div className='border border-gray-400 m-2 py-1.5 px-3 text-sm rounded-full text-gray-400'>
-                Vote Count: <b className='text-black'> {voteCount} </b> 
-            </div>
         </div>
-        </>
     );
 };
 

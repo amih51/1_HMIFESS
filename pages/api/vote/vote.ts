@@ -1,77 +1,41 @@
-import { PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
+import { PrismaClient } from '@prisma/client';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method === "POST") {
+type VoteType = boolean;
+
+interface VoteRequest {
+    postId: string;
+    userId: string;
+    voteType: VoteType;
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method === 'POST') {
+        const { postId, userId, voteType }: VoteRequest = req.body;
+
+        if (!postId || !userId || typeof voteType !== 'boolean') {
+            return res.status(400).json({ message: 'Invalid request' });
+        }
+
         try {
-            const { postId, userId, voteType } = req.body;
-
-            // Check if the user has already voted
             const existingVote = await prisma.vote.findFirst({
-                where: {
-                    postId,
-                    userId,
-                },
-            });
-
-            // Get current vote count
-            const post = await prisma.post.findUnique({
-                where: {
-                    id: postId,
-                },
+                where: { postId, userId },
             });
 
             if (existingVote) {
                 if (existingVote.voteType === voteType) {
-                    // Remove vote if the same vote type is clicked again
                     await prisma.vote.delete({
-                        where: {
-                            id: existingVote.id,
-                        },
+                        where: { id: existingVote.id },
                     });
-
-                    if (post) {
-                        const newVoteCount = post.voteCount - (voteType ? 1 : -1);
-                        
-                        // Update post's vote count
-                        await prisma.post.update({
-                            where: {
-                                id: postId,
-                            },
-                            data: {
-                                voteCount: newVoteCount,
-                            },
-                        });
-                    }
                 } else {
-                    // Update vote type
                     await prisma.vote.update({
-                        where: {
-                            id: existingVote.id,
-                        },
-                        data: {
-                            voteType,
-                        },
+                        where: { id: existingVote.id },
+                        data: { voteType },
                     });
-
-                    if (post) {
-                        const newVoteCount = post.voteCount + 2 * (voteType ? 1 : -1);
-                        
-                        // Update post's vote count
-                        await prisma.post.update({
-                            where: {
-                                id: postId,
-                            },
-                            data: {
-                                voteCount: newVoteCount,
-                            },
-                        });
-                    }
                 }
             } else {
-                // Create new vote
                 await prisma.vote.create({
                     data: {
                         postId,
@@ -79,31 +43,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         voteType,
                     },
                 });
-
-                if (post) {
-                    const newVoteCount = post.voteCount + (voteType ? 1 : -1);
-                    
-                    // Update post's vote count
-                    await prisma.post.update({
-                        where: {
-                            id: postId,
-                        },
-                        data: {
-                            voteCount: newVoteCount,
-                        },
-                    });
-                }
             }
 
-            res.status(200).json({ message: "Vote processed successfully" });
+            const upvotes = await prisma.vote.count({
+                where: { postId, voteType: true },
+            });
+            const downvotes = await prisma.vote.count({
+                where: { postId, voteType: false },
+            });
+
+            const voteCount = upvotes - downvotes;
+
+            const voteStatus = existingVote
+                ? (existingVote.voteType === voteType ? voteType : "none")
+                : voteType;
+
+            res.status(200).json({
+                voteCount,
+                voteStatus: voteStatus ? (voteType ? "upvoted" : "downvoted") : "none",
+            });
         } catch (error) {
-            console.error("Failed to process vote:", error);
-            res.status(500).json({ error: "Failed to process vote" });
+            console.error("Error processing vote:", error);
+            res.status(500).json({ message: 'Internal server error' });
         }
     } else {
-        res.setHeader("Allow", ["POST"]);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-};
-
-export default handler;
+}
