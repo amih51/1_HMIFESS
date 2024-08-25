@@ -15,6 +15,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
   const email = session?.user?.email;
 
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault
     if (!session) return;
 
     try {
@@ -45,7 +46,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
   if (!session) return null;
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-row mt-4 mb-8'>
+    <form onSubmit={handleSubmit} className='flex flex-row my-4 h-18'>
       <Image 
         src={session.user?.image || 'hmif-logo-p.png'} 
         alt='Profile Photo' 
@@ -54,11 +55,12 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
         className="w-8 h-8 rounded-full"
       />
       {/*Comment Box*/}
-      <textarea className='w-full bg-gray-100 rounded-xl px-5 py-3 ml-5'
+      <input 
         value={body}
         onChange={(e) => setBody(e.target.value)}
         placeholder="Tambahkan Komentar"
         required
+        className='w-full bg-gray-100 rounded-xl px-5 py-3 ml-5 focus:outline-none'
       />
       {/*Anonymous Checkbox & Tombol Kirim*/}
       <div className='flex flex-col'>
