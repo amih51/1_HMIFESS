@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "yarn prisma db push && yarn prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
@@ -21,7 +21,6 @@
     "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
-    "react-responsive": "^10.0.0",
     "react-select": "^5.8.0",
     "reactjs-popup": "^2.0.6",
     "swr": "^2.2.5",
