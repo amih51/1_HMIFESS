@@ -47,7 +47,7 @@ export default function Page({ params }: { params: { category: string } }) {
                 {/* Content */}
                 {filteredPosts.length > 0 ? (
                     <div className="pt-6">
-                        <DisplayPost posts={filteredPosts} />
+                        <DisplayPost posts={filteredPosts} itemsPerPage={10} />
                     </div>
                 ) : (
                     <div className="text-center mt-10">
