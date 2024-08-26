@@ -12,7 +12,7 @@ const AllPosts = () => {
   if (!posts) return <LoaderBar />; 
 
   return (
-    <DisplayPost posts={posts} />
+    <DisplayPost posts={posts} showComments={false} />
   );
 };
 

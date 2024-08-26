@@ -1,3 +1,4 @@
+//src/app/m/[id]/page.tsx
 "use client"
 
 import LoaderBar from "@/components/loader-bar";
@@ -38,7 +39,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 {/* Content */}
                 {filteredPosts.length > 0 ? (
                     <div className="pt-6">
-                        <DisplayPost posts={filteredPosts} />
+                        <DisplayPost posts={filteredPosts} showComments={true} />
                     </div>
                 ) : (
                     <div className="text-center mt-10">
