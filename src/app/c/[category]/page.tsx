@@ -28,12 +28,9 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Page({ params }: { params: { category: string } }) {
     const { data: posts, error } = useSWR<Post[]>("/api/post/posts", fetcher);
-
     if (error) return <div>Failed to load posts.</div>;
     if (!posts) return <LoaderBar />;
-
     const filteredPosts = posts.filter((post) => post.category.name === params.category);
-
     return (
         <main className="bg-white min-h-screen">
             <div className="bg-white p-7 flex flex-col min-h-screen">
@@ -43,18 +40,19 @@ export default function Page({ params }: { params: { category: string } }) {
                     <SelectCategory />
                 </div>
                 <SearchBar />
-
                 {/* Content */}
                 {filteredPosts.length > 0 ? (
                     <div className="pt-6">
-                        <DisplayPost posts={filteredPosts} itemsPerPage={10} />
+                        <DisplayPost posts={filteredPosts} showComments={false} />
                     </div>
                 ) : (
                     <div className="text-center mt-10">
-                        <p className="text-gray-500">No posts found for category &quot{params.category}&quot.</p>
+                        <p className="text-gray-500">No posts found for category &quot;{params.category}&quot;.</p>
                     </div>
                 )}
             </div>
         </main>
     );
 }
+
+

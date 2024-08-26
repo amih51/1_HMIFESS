@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
@@ -18,7 +17,6 @@ export default function DisplayName() {
         setIsDropdownOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);

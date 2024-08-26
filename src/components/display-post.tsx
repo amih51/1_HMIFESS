@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import VoteBtn from "./vote-btn";
-import LoaderBar from "./loader-bar"; 
+import LoaderBar from "./loader-bar";
 import Image from "next/image";
-import { ChatBubbleOvalLeftIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ChatBubbleOvalLeftIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
+import Comments from "./comments";
 import { useMediaQuery } from "react-responsive";
 
 interface Post {
@@ -21,14 +25,18 @@ interface Post {
   voteCount: number;
   createdAt: string;
   updatedAt: string;
+  Comments?: Comment[];
 }
 
 interface DisplayPostProps {
   posts: Post[];
-  itemsPerPage: number;
+  showComments?: boolean;
 }
 
-const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
+const DisplayPost: React.FC<DisplayPostProps> = ({
+  posts,
+  showComments = false,
+}) => {
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const isTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
@@ -37,11 +45,27 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   if (!posts || posts.length === 0) {
-    return <LoaderBar />; 
+    return <LoaderBar />;
   }
 
+  const [commentCounts, setCommentCounts] = useState<{ [key: string]: number }>({});
+
+  useEffect(() => {
+    const fetchCommentCounts = async () => {
+      const counts: { [key: string]: number } = {};
+      for (const post of posts) {
+        const response = await fetch(`/api/comments/count/${post.id}`);
+        const { commentsCount } = await response.json();
+        counts[post.id] = commentsCount || 0;
+      }
+      setCommentCounts(counts);
+    };
+
+    fetchCommentCounts();
+  }, [posts]);
+
   const imageStyle = {
-    borderRadius: '50%',
+    borderRadius: "50%",
   };
 
   // Pagination logic
@@ -71,8 +95,8 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
     <>
       <ul>
         {currentPosts.map((post) => (
-          <Link key={post.id} href={`/m/${post.id}`}>
-            <li className='border-b-2 border-gray-500 py-3'>
+          <li key={post.id} className="border-b-2 border-gray-500 py-3">
+            <Link href={`/m/${post.id}`}>
               {/*Username or Anonymous & Profile Image*/}
               <div className="flex flex-row font-bold place-items-center">
                 {post.isAnon ? (
@@ -81,19 +105,32 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
                     <div className="flex flex-col">
                       <p className="ml-1">Warga Biasa</p>
                       {/*Updated At*/}
-                      <p className="ml-1 text-[10px] text-gray-400 font-normal">{new Date(post.createdAt).toLocaleString()} <br /></p>
+                      <p className="ml-1 text-[10px] text-gray-400 font-normal">
+                        {new Date(post.createdAt).toLocaleString()} <br />
+                      </p>
                     </div>
                   </>
                 ) : (
                   <>
                     <Link href={`/profile/${post.user.id}`}>
-                      <Image src={post.user.image} alt="profile photo" width={40} height={40} style={imageStyle} />
+                      <Image
+                        src={post.user.image}
+                        alt="profile photo"
+                        width={40}
+                        height={40}
+                        style={imageStyle}
+                      />
                     </Link>
                     <div className="flex flex-col">
-                      <Link href={`/profile/${post.user.id}`} className="ml-3 hover:underline">
+                      <Link
+                        href={`/profile/${post.user.id}`}
+                        className="ml-3 hover:underline"
+                      >
                         {post.user.name}
                       </Link>
-                      <p className="ml-3 text-[10px] text-gray-400 font-normal">{new Date(post.createdAt).toLocaleString()} <br /></p>
+                      <p className="ml-3 text-[10px] text-gray-400 font-normal">
+                        {new Date(post.createdAt).toLocaleString()} <br />
+                      </p>
                     </div>
                   </>
                 )}
@@ -103,20 +140,19 @@ const DisplayPost: React.FC<DisplayPostProps> = ({ posts }) => {
                 {post.category.name}
               </div>
               {/*Body*/}
-              <div className="my-2">
-                {post.body}
-              </div>
-              {/*Up Vote - Down Vote, Count Vote, & Comment*/}
-              <div className="flex flex-row place-items-center">
-                <VoteBtn postId={post.id} userId={post.user.id} />
-                <button className="ml-5 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-full">
-                  <ChatBubbleOvalLeftIcon className="w-5 h-5" />
-                </button>
-              </div>
-              {/*Comments*/}
-              {/* <Comments postId={post.id} /> */}
-            </li>
-          </Link>
+              <div className="my-2">{post.body}</div>
+            </Link>
+            {/*Up Vote - Down Vote, Count Vote, & Comment*/}
+            <div className="flex flex-row place-items-center">
+              <VoteBtn postId={post.id} userId={post.user.id} />
+              <button className="ml-5 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-full flex items-center">
+                <ChatBubbleOvalLeftIcon className="w-5 h-5" />
+                <span className="ml-1">{commentCounts[post.id] ?? 0}</span>
+              </button>
+            </div>
+            {/*Comments*/}
+            {showComments && <Comments postId={post.id} />}
+          </li>
         ))}
       </ul>
 
