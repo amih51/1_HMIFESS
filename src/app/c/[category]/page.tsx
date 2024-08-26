@@ -1,3 +1,4 @@
+//src/app/c/[category]/page.tsx
 "use client"
 
 import SelectCategory from "@/components/select-category";
@@ -47,7 +48,7 @@ export default function Page({ params }: { params: { category: string } }) {
                 {/* Content */}
                 {filteredPosts.length > 0 ? (
                     <div className="pt-6">
-                        <DisplayPost posts={filteredPosts} />
+                        <DisplayPost posts={filteredPosts} showComments={false}/>
                     </div>
                 ) : (
                     <div className="text-center mt-10">

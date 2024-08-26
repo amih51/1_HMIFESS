@@ -113,7 +113,7 @@ const Profile = () => {
       [
         {id: "postingan",
         content: userPost.length > 0 ? (
-          <DisplayPost posts={userPost} />
+          <DisplayPost posts={userPost} showComments={false} />
         ) : (
           <p>No upvoted posts.</p>
         ),
@@ -125,7 +125,7 @@ const Profile = () => {
       {
         id: "upvoted",
         content: upvotePosts.length > 0 ? (
-          <DisplayPost posts={upvotePosts} />
+          <DisplayPost posts={upvotePosts} showComments={false}/>
         ) : (
           <p>No upvoted posts.</p>
         ),

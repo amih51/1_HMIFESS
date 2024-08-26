@@ -46,36 +46,41 @@ const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
   if (!session) return null;
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-row my-4 h-18'>
-      <Image 
-        src={session.user?.image || 'hmif-logo-p.png'} 
-        alt='Profile Photo' 
-        width={32}
-        height={32}
-        className="w-8 h-8 rounded-full"
-      />
-      {/*Comment Box*/}
-      <input 
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-        placeholder="Tambahkan Komentar"
-        required
-        className='w-full bg-gray-100 rounded-xl px-5 py-3 ml-5 focus:outline-none'
-      />
+    <form onSubmit={handleSubmit} className='flex flex-col my-4 space-y-4'>
+      <div className='flex items-start'>
+        <Image 
+          src={session.user?.image || 'hmif-logo-p.png'} 
+          alt='Profile Photo' 
+          width={32}
+          height={32}
+          className="w-8 h-8 rounded-full"
+        />
+        {/*Comment Box*/}
+        <textarea 
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          placeholder="Tambahkan Komentar"
+          required
+          className='w-full bg-gray-100 rounded-xl px-5 py-3 ml-4 focus:outline-none resize-none'
+          rows={3} // Menambahkan beberapa baris default
+        />
+      </div>
       {/*Anonymous Checkbox & Tombol Kirim*/}
-      <div className='flex flex-col'>
-        <div className='ml-3 text-sm flex items-center'>
-          <label className='place-content-center order border-black flex items-center mr-5'>
+      <div className='flex items-center justify-between'>
+        <div className='flex items-center'>
+          <label className='text-sm flex items-center'>
             <input
               type="checkbox"
               checked={isAnon}
               onChange={(e) => setIsAnon(e.target.checked)}
               className='mr-1'
             />
-              Anonymous
+            Anonymous
           </label>
         </div>
-        <button type="submit" className='bg-green-700 hover:bg-green-900 m-2 mr-4 px-4 py-2 rounded-full text-white'>Kirim</button>
+        <button type="submit" className='bg-green-700 hover:bg-green-900 px-4 py-2 rounded-full text-white'>
+          Kirim
+        </button>
       </div>
     </form>
   );
