@@ -5,26 +5,50 @@ import { ArrowDownCircleIcon, ArrowUpCircleIcon } from '@heroicons/react/24/outl
 import LoaderBar from './loader-bar';
 import { fetcher } from '@/lib/fetcher';
 
-type VoteType = boolean; 
 type VoteStatus = "none" | "upvoted" | "downvoted";
 
 interface VoteBtnProps {
     postId: string;
     userId: string;
+    initialVoteCount: number;
 }
 
-const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
-    const { data: voteData, error: voteError } = useSWR(`/api/vote/vote-status?postId=${postId}&userId=${userId}`, fetcher);
-    const { data: postData, error: postError } = useSWR(`/api/post/${postId}`, fetcher);
+const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId, initialVoteCount }) => {
+    const { data, error, mutate } = useSWR(`/api/vote/vote-status?postId=${postId}&userId=${userId}`, fetcher);
 
-    const [voteStatus, setVoteStatus] = useState<VoteStatus>(voteData?.voteType ? "upvoted" : voteData?.voteType === false ? "downvoted" : "none");
-    const [voteCount, setVoteCount] = useState<number>(postData?.voteCount || 0);
+    const [voteCount, setVoteCount] = useState<number>(initialVoteCount);
 
-    if (voteError || postError) return <div>Failed to load vote data.</div>;
-    if (!voteData || !postData) return <LoaderBar />;
+    if (error) return <div>Failed to load vote data.</div>;
+    if (!data) return <LoaderBar />;
 
+    const voteStatus: VoteStatus = data.voteType === "upvote" ? "upvoted" : data.voteType === "downvote" ? "downvoted" : "none";
+    const handleVote = async (type: boolean) => {
+        const oldStatus = voteStatus;
+        const oldCount = voteCount;
 
-    const handleVote = async (type: VoteType) => {
+        // Determine new status
+        let newStatus: VoteStatus;
+        if (type && oldStatus !== "upvoted") {
+            newStatus = "upvoted";
+        } else if (!type && oldStatus !== "downvoted") {
+            newStatus = "downvoted";
+        } else {
+            newStatus = "none";
+        }
+
+        // Optimistic UI update
+        let countChange = 0;
+        if (oldStatus === "none") {
+            countChange = type ? 1 : -1;
+        } else if (oldStatus === "upvoted") {
+            countChange = type ? -1 : -2;
+        } else if (oldStatus === "downvoted") {
+            countChange = type ? 2 : 1;
+        }
+
+        setVoteCount(oldCount + countChange);
+        mutate({ voteType: newStatus === "none" ? "none" : (newStatus === "upvoted" ? "upvote" : "downvote") }, false);
+
         try {
             const res = await fetch("/api/vote/vote", {
                 method: "POST",
@@ -34,22 +58,22 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
                 body: JSON.stringify({
                     postId,
                     userId,
-                    voteType: type,
+                    voteType: newStatus === "none" ? null : type,
                 }),
             });
 
-            if (res.ok) {
-                setVoteStatus(voteStatus === (type ? "upvoted" : "downvoted") ? "none" : (type ? "upvoted" : "downvoted"));
-
-                const updatedCountRes = await fetch(`/api/post/${postId}`);
-                const { voteCount } = await updatedCountRes.json();
-                setVoteCount(voteCount);
+            if (!res.ok) {
+                // Revert changes if request fails
+                setVoteCount(oldCount);
+                mutate();
             }
         } catch (error) {
             console.error("Failed to process vote:", error);
+            // Revert changes if request fails
+            setVoteCount(oldCount);
+            mutate();
         }
     };
-
     return (
         <div className='flex flex-row place-items-center'>
             <div className='flex flex-row'>

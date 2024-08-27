@@ -10,6 +10,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Comments from "./comments";
 import {useState, useEffect} from 'react'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/fetcher'
 interface Post {
   id: string;
   isAnon: boolean;
@@ -43,20 +45,25 @@ const DisplayPost: React.FC<DisplayPostProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; 
 
-  useEffect(() => {
-    const fetchCommentCounts = async () => {
-      const counts: { [key: string]: number } = {};
-      for (const post of posts) {
-        const response = await fetch(`/api/comments/count/${post.id}`);
-        const { commentsCount } = await response.json();
-        counts[post.id] = commentsCount || 0;
-      }
-      setCommentCounts(counts);
-    };
+  const { data: commentCountsData, error: commentError } = useSWR(
+    posts ? posts.map(post => `/api/comments/count/${post.id}`) : null,
+    (urls: string[]) => Promise.all(urls.map(url => fetcher(url))),
+    {
+        fallbackData: posts ? posts.map(() => ({ commentsCount: 0 })) : [],
+        revalidateOnFocus: false,
+    }
+);
 
-    fetchCommentCounts();
-    
-  }, [posts]);
+useEffect(() => {
+    if (commentCountsData) {
+        const counts = commentCountsData.reduce((acc, { commentsCount }, index) => {
+            acc[posts[index].id] = commentsCount || 0;
+            return acc;
+        }, {} as { [key: string]: number });
+        setCommentCounts(counts);
+    }
+}, [commentCountsData, posts]);
+
 
   if (!posts || posts.length === 0) {
     return <LoaderBar />;
@@ -140,7 +147,7 @@ const DisplayPost: React.FC<DisplayPostProps> = ({
           </Link>
           {/*Up Vote - Down Vote, Count Vote, & Comment*/}
           <div className="flex flex-row place-items-center">
-            <VoteBtn postId={post.id} userId={post.user.id} />
+            <VoteBtn postId={post.id} userId={post.user.id} initialVoteCount={post.voteCount}/>
             <button className="ml-5 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-full flex items-center">
               <ChatBubbleOvalLeftIcon className="w-5 h-5" />
               <span className="ml-1">{commentCounts[post.id] ?? 0}</span>
