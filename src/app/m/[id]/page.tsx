@@ -34,8 +34,8 @@ export default function Page({ params }: { params: { id: string } }) {
     const filteredPosts = posts.filter((post) => post.id === params.id);
 
     return (
-        <main className="bg-white min-h-screen">
-            <div className="bg-white p-7 flex flex-col min-h-screen">
+        <main className="bg-white dark:bg-gray-800 min-h-screen">
+            <div className="bg-white dark:bg-gray-800 p-7 flex flex-col min-h-screen">
                 {/* Content */}
                 {filteredPosts.length > 0 ? (
                     <div className="pt-6">

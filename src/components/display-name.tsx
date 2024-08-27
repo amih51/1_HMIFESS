@@ -38,9 +38,7 @@ export default function DisplayName() {
   const name = session.user.name;
 
   return (
-    <div className="relative flex items-center space-x-4 p-4 rounded-3xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-100">
-      
-
+    <div className="relative flex items-center space-x-4 rounded-3xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-100">
       <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild className="bg-transparent focus:bg-transparent">
           <Button className="flex items-center space-x-4 w-full hover:bg-transparent" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
