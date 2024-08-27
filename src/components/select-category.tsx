@@ -2,6 +2,20 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command";
+import { Button } from "@/components/ui/button";
 
 type OptionType = {
   value: string;
@@ -10,20 +24,14 @@ type OptionType = {
 
 export default function SelectCategory() {
   const [category, setCategory] = useState<OptionType[]>([]);
+  const [open, setOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<OptionType | null>(null);
+  const [query, setQuery] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  const categoryToOptions = (): OptionType[] => {
-    if (!Array.isArray(category) || category.length < 1) return [];
-
-    return category.map((sub: any) => ({
-      value: sub.name,
-      label: sub.displayName,
-    }));
-  };
 
   const fetchData = async () => {
     try {
@@ -31,39 +39,66 @@ export default function SelectCategory() {
       const data = await res.json();
 
       if (Array.isArray(data)) {
-        setCategory(data);
+        setCategory(
+          data.map((sub: any) => ({
+            value: sub.name,
+            label: sub.displayName,
+          }))
+        );
       } else {
-        setCategory([]); 
+        setCategory([]);
       }
     } catch (error) {
-      setCategory([]); 
+      setCategory([]);
     }
   };
 
-  const handleCategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selectedValue = event.target.value;
-    if (selectedValue) {
-      router.push(`/c/${selectedValue}`);
+  const filteredOptions = query === ""
+    ? category
+    : category.filter((option) =>
+        option.label.toLowerCase().includes(query.toLowerCase())
+      );
+
+  const handleCategoryChange = (value: string) => {
+    const selected = category.find((option) => option.value === value) || null;
+    setSelectedCategory(selected);
+    setOpen(false);
+
+    if (selected) {
+      router.push(`/c/${selected.value}`);
     }
   };
 
   return (
     <div className="flex m-3">
-    <select
-        name="Category"
-        title="Select a category" 
-        className="basic-single-select px-3 py-1 text-xs rounded-lg border-2 border-black bg-white shadow-sm mt-2.5 cursor-pointer"
-        onChange={handleCategoryChange}
-    >
-        <option value="">Select Category</option>
-        {categoryToOptions().map((option) => (
-        <option key={option.value} value={option.value}>
-            {option.label}
-        </option>
-        ))}
-    </select>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="w-[150px] justify-start">
+            {selectedCategory ? selectedCategory.label : "Select Category"}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[200px] p-0" align="start">
+          <Command>
+            <CommandInput
+              placeholder="Cari kategori..."
+            />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup>
+                {filteredOptions.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    value={option.value}
+                    onSelect={handleCategoryChange}
+                  >
+                    {option.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }

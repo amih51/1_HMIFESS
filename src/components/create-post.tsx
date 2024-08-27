@@ -4,25 +4,29 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
+import { Button } from "@/components/ui/button";
 
 interface CreatePostModalProps {
   onClose: () => void;
   categories: { value: string; label: string }[];
 }
 
-export default function CreatePostModal({ onClose, categories = [] }: CreatePostModalProps) { // Ensure categories defaults to an empty array
+export default function CreatePostModal({ onClose, categories = [] }: CreatePostModalProps) {
   const [body, setBody] = useState('');
   const [isAnon, setIsAnon] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const { data: session } = useSession();
   const router = useRouter();
   const email = session?.user?.email;
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!selectedCategory) {
-      alert("Please select a category before submitting!");
+      toast.error("Please select a category before submitting!");
       return;
     }
 
@@ -36,12 +40,18 @@ export default function CreatePostModal({ onClose, categories = [] }: CreatePost
 
     if (response.ok) {
       router.push(`/c/${selectedCategory}`);
-      toast.success("Menfess Anda berhasil terbuat!")
+      toast.success("Menfess Anda berhasil terbuat!");
       onClose();
     } else {
       const error = await response.json();
       console.error('Failed to create post', error.message);
+      toast.error("Gagal membuat menfess!");
     }
+  };
+
+  const handleCategorySelect = (value: string) => {
+    setSelectedCategory(value);
+    setIsOpen(false);
   };
 
   return (
@@ -59,23 +69,31 @@ export default function CreatePostModal({ onClose, categories = [] }: CreatePost
             />
           </div>
           <div className="mb-4">
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="border w-full bg-gray-100 p-2 rounded"
-              required
-            >
-              <option value="" disabled>Select a category</option>
-              {categories.length > 0 ? (
-                categories.map((category) => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>Loading categories...</option>
-              )}
-            </select>
+            <Popover open={isOpen} onOpenChange={setIsOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full justify-start">
+                  {selectedCategory ? categories.find(c => c.value === selectedCategory)?.label : "Select a category"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="min-w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Cari kategori..." />
+                  <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup>
+                      {categories.map((category) => (
+                        <CommandItem
+                          key={category.value}
+                          onSelect={() => handleCategorySelect(category.value)}
+                        >
+                          {category.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="flex items-center mb-4">
             <input
