@@ -13,6 +13,7 @@ export const authOptions = {
   pages: {
     signIn: '/', 
     error: '/',
+    signOut: '',
   },
   providers: [
     GoogleProvider({

@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import LogoutButton from "./auth/signout";
 
 export default function DisplayName() {
   const { data: session } = useSession();
@@ -33,6 +34,7 @@ export default function DisplayName() {
               >
               Profile
             </Link>
+            <LogoutButton />
             <Link
               href="/api/auth/signout"
               className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
@@ -66,6 +68,7 @@ export default function DisplayName() {
               >
               Profile
             </Link>
+            <LogoutButton />
             <Link
               href="/api/auth/signout"
               className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
