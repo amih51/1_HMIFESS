@@ -74,7 +74,7 @@ export default function SelectCategory() {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-[150px] justify-start">
-            {selectedCategory ? selectedCategory.label : "Select Category"}
+            {selectedCategory ? selectedCategory.label : "Pilih Kategori"}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
