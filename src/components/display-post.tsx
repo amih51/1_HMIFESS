@@ -1,3 +1,4 @@
+//src/app/components/display-post.tsx
 import React from "react";
 import Link from "next/link";
 import VoteBtn from "./vote-btn";
@@ -30,17 +31,17 @@ interface Post {
 interface DisplayPostProps {
   posts: Post[];
   showComments?: boolean;
+  showPagination?: boolean;
 }
 
 const DisplayPost: React.FC<DisplayPostProps> = ({
   posts,
   showComments = false,
+  showPagination = true,
 }) => {
-  if (!posts || posts.length === 0) {
-    return <LoaderBar />;
-  }
-
   const [commentCounts, setCommentCounts] = useState<{ [key: string]: number }>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; 
 
   useEffect(() => {
     const fetchCommentCounts = async () => {
@@ -54,14 +55,42 @@ const DisplayPost: React.FC<DisplayPostProps> = ({
     };
 
     fetchCommentCounts();
-
+    
   }, [posts]);
+
+  if (!posts || posts.length === 0) {
+    return <LoaderBar />;
+  }
+
   const imageStyle = {
     borderRadius: "50%",
   };
+   // Pagination logic
+   const indexOfLastItem = currentPage * itemsPerPage;
+   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+   const currentPosts = posts.slice(indexOfFirstItem, indexOfLastItem);
+ 
+   const totalPages = Math.ceil(posts.length / itemsPerPage);
+ 
+   const handlePageChange = (page: number) => {
+     if (page > 0 && page <= totalPages) {
+       setCurrentPage(page);
+     }
+   };
+ 
+   const renderPageNumbers = () => {
+     const pages = [];
+     for (let i = 1; i <= totalPages; i++) {
+       pages.push(i);
+     }
+     return pages;
+   };
+ 
+   const pageNumbers = renderPageNumbers();
   return (
+    <>
     <ul>
-      {posts.map((post) => (
+      {currentPosts.map((post) => (
         <li key={post.id} className="border-b-2 border-gray-500 py-3">
           <Link href={`/m/${post.id}`}>
             {/*Username or Anonymous & Profile Image*/}
@@ -122,6 +151,37 @@ const DisplayPost: React.FC<DisplayPostProps> = ({
         </li>
       ))}
     </ul>
+
+    {showPagination && (<div className="flex grid-cols-3 justify-between space-x-2 mt-6 mb-10">
+    <button
+      onClick={() => handlePageChange(currentPage - 1)}
+      className="bg-green-100 text-green-800 px-3 py-1 rounded-md"
+      disabled={currentPage === 1}
+    >
+      Previous
+    </button>
+    <div className="flex gap-2">
+      {pageNumbers.map((num) => (
+        <button
+          key={num}
+          onClick={() => handlePageChange(num)}
+          className={`px-3 py-1 rounded-md ${
+            num === currentPage ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'
+          }`}
+        >
+          {num}
+        </button>
+      ))}
+    </div>
+    <button
+      onClick={() => handlePageChange(currentPage + 1)}
+      className="bg-green-100 text-green-800 px-3 py-1 rounded-md"
+      disabled={currentPage === totalPages}
+    >
+      Next
+    </button>
+  </div>)}
+  </>
   );
 };
 

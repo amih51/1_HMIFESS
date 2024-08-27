@@ -113,7 +113,7 @@ const Profile = () => {
       [
         {id: "postingan",
         content: userPost.length > 0 ? (
-          <DisplayPost posts={userPost} showComments={false} />
+          <DisplayPost posts={userPost} showComments={false} showPagination={true}/>
         ) : (
           <p>No upvoted posts.</p>
         ),
@@ -125,7 +125,7 @@ const Profile = () => {
       {
         id: "upvoted",
         content: upvotePosts.length > 0 ? (
-          <DisplayPost posts={upvotePosts} showComments={false}/>
+          <DisplayPost posts={upvotePosts} showComments={false} showPagination={true}/>
         ) : (
           <p>No upvoted posts.</p>
         ),

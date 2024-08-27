@@ -1,7 +1,11 @@
+"use client"
 import useSWR from 'swr';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ArrowDownCircleIcon, ArrowUpCircleIcon } from '@heroicons/react/24/outline';
+import LoaderBar from './loader-bar';
+import { fetcher } from '@/lib/fetcher';
 
+type VoteType = boolean; 
 type VoteStatus = "none" | "upvoted" | "downvoted";
 
 interface VoteBtnProps {
@@ -9,40 +13,18 @@ interface VoteBtnProps {
     userId: string;
 }
 
-const postFetcher = async (url: string, postId: string, userId: string) => {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ postId, userId }),
-    });
-  
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-    }
-  
-    return response.json();
-};
-
 const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
-    const { data: vote, mutate: mutate, error: error } = useSWR(
-        postId && userId ? ['/api/vote/vote-state', postId, userId] : null,
-        ([url, postId, userId]) => postFetcher(url, postId, userId)
-    );
+    const { data: voteData, error: voteError } = useSWR(`/api/vote/vote-status?postId=${postId}&userId=${userId}`, fetcher);
+    const { data: postData, error: postError } = useSWR(`/api/post/${postId}`, fetcher);
 
-    const [voteStatus, setVoteStatus] = useState<VoteStatus>("none");
-    const [voteCount, setVoteCount] = useState<number>(0);
+    const [voteStatus, setVoteStatus] = useState<VoteStatus>(voteData?.voteType ? "upvoted" : voteData?.voteType === false ? "downvoted" : "none");
+    const [voteCount, setVoteCount] = useState<number>(postData?.voteCount || 0);
 
-    useEffect(() => {
-        if (vote) {
-            setVoteStatus(vote ? (vote.voteType ? "upvoted" : "downvoted") : "none");
-            setVoteCount(vote.voteCount);
-        }
-    }, [vote]);
+    if (voteError || postError) return <div>Failed to load vote data.</div>;
+    if (!voteData || !postData) return <LoaderBar />;
 
-    const handleVote = async (type: boolean) => {
+
+    const handleVote = async (type: VoteType) => {
         try {
             const res = await fetch("/api/vote/vote", {
                 method: "POST",
@@ -57,13 +39,11 @@ const VoteBtn: React.FC<VoteBtnProps> = ({ postId, userId }) => {
             });
 
             if (res.ok) {
-                const result = await res.json();
-                setVoteStatus(result.voteStatus);
-                setVoteCount(result.voteCount);
+                setVoteStatus(voteStatus === (type ? "upvoted" : "downvoted") ? "none" : (type ? "upvoted" : "downvoted"));
 
-                mutate();
-            } else {
-                console.error(`Failed to process vote: ${res.statusText}`);
+                const updatedCountRes = await fetch(`/api/post/${postId}`);
+                const { voteCount } = await updatedCountRes.json();
+                setVoteCount(voteCount);
             }
         } catch (error) {
             console.error("Failed to process vote:", error);
