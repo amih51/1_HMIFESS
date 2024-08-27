@@ -160,7 +160,7 @@ const Profile = () => {
                   type="text"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
-                  className="text-2xl font-semibold w-60 focus:outline-none"
+                  className="text-2xl font-semibold w-96 focus:outline-none "
                 />
                 <PencilIcon className="w-2 h-2"/>
               </form>

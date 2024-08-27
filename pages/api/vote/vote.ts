@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             });
 
             if (existingVote) {
-                if (existingVote.voteType === voteType) {
+                if (voteType === null) {
                     // Remove vote if the same vote type is clicked again
                     await prisma.vote.delete({
                         where: {
@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     });
 
                     if (post) {
-                        const newVoteCount = post.voteCount - (voteType ? 1 : -1);
+                        const newVoteCount = post.voteCount - (existingVote.voteType ? 1 : -1);
                         
                         // Update post's vote count
                         await prisma.post.update({
@@ -45,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                             },
                         });
                     }
-                } else {
+                } else if (existingVote.voteType !== voteType){
                     // Update vote type
                     await prisma.vote.update({
                         where: {
@@ -70,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         });
                     }
                 }
-            } else {
+            } else if (voteType !== null) {
                 // Create new vote
                 await prisma.vote.create({
                     data: {
