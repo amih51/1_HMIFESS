@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "../components/providers";
 import Nav from "@/components/nav";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +25,18 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen min-w-min bg-backgroundLogo">
         <Providers>
-          <div className="flex flex-col md:flex-row min-h-screen">
-            <Nav />
-            <main className="flex-1 bg-gray-100 pt-16 md:pt-0 md:pl-64">{children}</main>
-            <Toaster />
-          </div>
+          <ThemeProvider 
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex flex-col md:flex-row min-h-screen">
+              <Nav />
+              <main className="flex-1 bg-gray-100 pt-16 md:pt-0 md:pl-64">{children}</main>
+              <Toaster />
+            </div>
+          </ThemeProvider>
         </Providers>
       </body>
     </html>
