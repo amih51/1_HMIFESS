@@ -39,7 +39,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 {/* Content */}
                 {filteredPosts.length > 0 ? (
                     <div className="pt-6">
-                        <DisplayPost posts={filteredPosts} showComments={true} />
+                        <DisplayPost posts={filteredPosts} showComments={true} showPagination={false}/>
                     </div>
                 ) : (
                     <div className="text-center mt-10">
