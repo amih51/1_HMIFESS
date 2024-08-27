@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface CreatePostModalProps {
   onClose: () => void;
@@ -35,6 +36,7 @@ export default function CreatePostModal({ onClose, categories = [] }: CreatePost
 
     if (response.ok) {
       router.push(`/c/${selectedCategory}`);
+      toast.success("Menfess Anda berhasil terbuat!")
       onClose();
     } else {
       const error = await response.json();
