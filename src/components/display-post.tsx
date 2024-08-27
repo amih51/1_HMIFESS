@@ -36,10 +36,6 @@ const DisplayPost: React.FC<DisplayPostProps> = ({
   posts,
   showComments = false,
 }) => {
-  if (!posts || posts.length === 0) {
-    return <LoaderBar />;
-  }
-
   const [commentCounts, setCommentCounts] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
@@ -59,6 +55,9 @@ const DisplayPost: React.FC<DisplayPostProps> = ({
   const imageStyle = {
     borderRadius: "50%",
   };
+  if (!posts || posts.length === 0) {
+    return <LoaderBar />;
+  }
   return (
     <ul>
       {posts.map((post) => (
