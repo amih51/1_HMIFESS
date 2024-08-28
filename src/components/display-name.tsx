@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -68,7 +68,8 @@ export default function DisplayName() {
           </DropdownMenuItem>
           <DropdownMenuItem className="group cursor-pointer text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
             <LogOut className="ml-4 -mr-2"/>
-            <LogoutButton />
+            {/* <LogoutButton /> */}
+            <button onClick={() => signOut()} className="ml-4">Sign Out</button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
