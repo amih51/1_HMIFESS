@@ -27,16 +27,16 @@ yarn dev
 
 # Anggota Kelompok
 
-Ahmad Ibrahim                     | Product Manager & Software Developer
-Michael Dimas Sarono              | Product Manager
-Muhammad Omar Berliansyah         | Software Developer
-Diyah Susan Nugrahani             | Software Developer 
-Felix Chandra                     | Software Developer
-Najwa Kahani Fatima               | Software Developer
-Kefas Kurnia Jonathan             | Software Developer
-Aloisius Adrian Stevan Gunawan    | Software Developer
-Abdullah Farhan                   | Data Scientist & Software Developer
-Thafarriq Azka Rahmat             | Data Scientist
-Fathimah Nurhumaida Ramadhani     | Data Scientist
-Nicholas Andhika Lucas            | Nicholas Andhika Lucas
+| Ahmad Ibrahim                     | Product Manager & Software Developer |
+Michael Dimas Sarono              | Product Manager |
+Muhammad Omar Berliansyah         | Software Developer |
+Diyah Susan Nugrahani             | Software Developer |
+Felix Chandra                     | Software Developer |
+Najwa Kahani Fatima               | Software Developer |
+Kefas Kurnia Jonathan             | Software Developer |
+Aloisius Adrian Stevan Gunawan    | Software Developer |
+Abdullah Farhan                   | Data Scientist & Software Developer |
+Thafarriq Azka Rahmat             | Data Scientist |
+Fathimah Nurhumaida Ramadhani     | Data Scientist |
+Nicholas Andhika Lucas            | Nicholas Andhika Lucas |
 
