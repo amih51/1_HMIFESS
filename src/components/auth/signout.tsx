@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription } from "@/components/ui/alert-dialog";
@@ -20,7 +20,7 @@ export default function LogoutButton() {
     <>
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogTrigger asChild>
-          <Button>Sign Out</Button>
+          <Button className='w-full justify-start bg-transparent hover:bg-transparent text-primary font-normal'>Sign Out</Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

@@ -32,8 +32,8 @@ export default function Page({ params }: { params: { category: string } }) {
     if (!posts) return <LoaderBar />;
     const filteredPosts = posts.filter((post) => post.category.name === params.category);
     return (
-        <main className="bg-white min-h-screen">
-            <div className="bg-white p-7 flex flex-col min-h-screen">
+        <main className="min-h-screen">
+            <div className="bg-white dark:bg-gray-800 p-7 flex flex-col min-h-screen">
                 {/* Upper Part */}
                 <div className="flex flex-row place-items-center">
                     <div className="font-sans font-bold text-4xl">Category: {params.category}</div>
