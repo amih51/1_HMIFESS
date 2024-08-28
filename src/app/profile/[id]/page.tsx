@@ -35,7 +35,14 @@ const Profile = ({ params }: { params: { id: string } }) => {
         params.id ? [`/api/post/posts`, params.id] : null,
         ([url, id]) => postFetcher(url, id)
     );
-
+    const { data: userComments, error: userCommentsError } = useSWR(
+        params.id ? `/api/comments/user-comments?userId=${params.id}` : null,
+        fetcher
+    );
+    const { data: userCommentedPosts, error: userCommentedPostsError } = useSWR(
+        params.id ? `/api/comments/user-commented-posts?userId=${params.id}` : null,
+        fetcher
+    );
     const [tab, setTab] = useState('postingan');
     const [isPending, startTransition] = useTransition();
     const handleTabChange = (id: string) => {
@@ -44,23 +51,19 @@ const Profile = ({ params }: { params: { id: string } }) => {
         });
     };
 
+
     const { data: categories, error: categoriesError } = useSWR('/api/category/all-category', fetcher);
 
     if (userError) return <div>Failed to load user profile.</div>;
     if (postsError) return <div>Failed to load posts.</div>;
     if (categoriesError) return <div>Failed to load categories.</div>;
-    if (!user || !posts || !categories) return <LoaderBar />;
+    if (userCommentsError) return <div>Failed to load user comments.</div>;
+    if (userCommentedPostsError) return <div>Failed to load user commented posts.</div>;
+    if (!user || !posts || !categories || !userComments || !userCommentedPosts) return <LoaderBar />;
 
     const userPost = posts.filter((post: any) => post.user.id === user.id && !post.isAnon);
-
     const postCount = userPost.length;
-
-    const commentCount = posts.reduce((total: number, post: any) => {
-      if (Array.isArray(post.comments)) {
-        return total + post.comments.filter((comment: any) => comment.userId === user.id).length;
-      }
-      return total;
-    }, 0);
+    const commentedPostCount = userComments.commentedPostCount;
 
     const upvotePosts = posts
       .filter((post: any) => 
@@ -71,11 +74,11 @@ const Profile = ({ params }: { params: { id: string } }) => {
     const profile_tab = [
         {
             id: "postingan",
-            content: <DisplayPost posts={userPost} />,
+            content: <DisplayPost posts={userPost} showComments={false} showPagination={true}/>,
         },
         {
             id: "balasan",
-            content: "balasan di sini"
+            content: <DisplayPost posts={userCommentedPosts} showComments={false} showPagination={true}/>,
         }
     ];
 
@@ -104,7 +107,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                         <p className="text-gray-400 text-sm">Email: {user.email}</p>
                         <div className="flex flex-row text-gray-500">
                             <div><span className="font-semibold text-black">{postCount}</span> menfess</div>
-                            <div className="px-6"><span className="font-semibold text-black">{commentCount}</span> komentar</div>
+                            <div className="px-6"><span className="font-semibold text-black">{commentedPostCount}</span> komentar</div>
                         </div>
                     </div>
                 </div>

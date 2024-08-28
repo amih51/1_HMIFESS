@@ -1,28 +1,42 @@
-## Getting Started
+## HMIFESS
 
-First, run the development server:
+HMIFess adalah sebuah website yang dirancang khusus untuk warga HMIF saling berkomunikasi baik secara langsung maupun secara anonim. Aplikasi ini terinspirasi dari ITBFess pada sosial media X. Website ini memungkinkan seluruh warga HMIF yang memiliki email 196, 135, ataupun 182 untuk masuk ke dalam website dan berkomunikasi dengan warga lainnya. Anda bisa melihat postingan dan komentar orang lain, membuat postingan dan komentar sendiri, upvote dan downvote, serta melihat aktivitas sendiri maupun orang lain.
 
+Setup Environment yang digunakan:
+- Bahasa pemrograman: Typescript, Tailiwind CSS
+- Framework: Next.js
+- Repository: GitHub
+- Desain UI/UX : Figma
+- ORM : Prisma
+- Database : Vercel/AWS
+- Hosting : Vercel
+
+# Cara menjalankan program:
+
+1. Dwnload repository ini dan extract.
+2. Buka folder HMIFess pada terminal
+3. Install terlebih dahulu seluruh keperluan yang dibutuhkan:
+```bash
+yarn install
+```
+4. Jalankan di local:
 ```bash
 yarn dev
 ```
+5. Buka [http://localhost:3000](http://localhost:3000) di browser untuk melihat hasilnya.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Anggota Kelompok
 
-
-## Tools and Documentation
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Learn Next.js](https://nextjs.org/learn)
-
-- [the Next.js GitHub repository](https://github.com/vercel/next.js/)
-
-- [`next/font`](https://nextjs.org/docs/basic-features/font-optimization)
-
-- [Tailwind](https://tailwindcss.com/)
-- [Next.js](https://nextjs.org/)
-- [Next.js Examples](https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss)
-- [Next-auth](https://next-auth.js.org)
-- [Prisma](https://www.prisma.io)
-- [Aws](https://aws.amazon.com/?nc1=h_ls)
-- [How to Build a Fullstack App with Next.js, Prisma, and Vercel Postgres](https://vercel.com/guides/nextjs-prisma-postgres)
+| Ahmad Ibrahim                     | Product Manager & Software Developer |
+Michael Dimas Sarono              | Product Manager |
+Muhammad Omar Berliansyah         | Software Developer |
+Diyah Susan Nugrahani             | Software Developer |
+Felix Chandra                     | Software Developer |
+Najwa Kahani Fatima               | Software Developer |
+Kefas Kurnia Jonathan             | Software Developer |
+Aloisius Adrian Stevan Gunawan    | Software Developer |
+Abdullah Farhan                   | Data Scientist & Software Developer |
+Thafarriq Azka Rahmat             | Data Scientist |
+Fathimah Nurhumaida Ramadhani     | Data Scientist |
+Nicholas Andhika Lucas            | Nicholas Andhika Lucas |
 
